@@ -27,26 +27,6 @@ html[data-theme="nox"] #stars { opacity:1; }
 .star { position:absolute; width:2px; height:2px; border-radius:50%; background:#f4ecd2; animation: twinkle 4s ease-in-out infinite; }
 @keyframes twinkle { 0%,100% { opacity:.25; } 50% { opacity:.9; } }
 
-/* ---- the oath gate ---- */
-#gate {
-  position:fixed; inset:0; z-index:100; display:flex; flex-direction:column; gap:2.2rem;
-  align-items:center; justify-content:center; text-align:center; padding:2rem;
-  background: radial-gradient(ellipse at 50% 40%, #1a1430 0%, #0a0816 75%);
-  color:#e9e2cf; transition: opacity 1.1s ease, visibility 1.1s;
-}
-#gate.opened { opacity:0; visibility:hidden; }
-#gate .oath {
-  font-style:italic; font-size:clamp(1.25rem, 3.4vw, 1.8rem); max-width:26ch; line-height:1.6;
-  text-shadow: 0 0 22px rgba(227,179,65,.25);
-}
-#gate button {
-  font-family:inherit; font-variant:small-caps; letter-spacing:.18em; font-size:1.02rem;
-  color:#f0e6c8; background:transparent; border:1px solid #b08c2e; border-radius:2px;
-  padding:.85rem 2.1rem; cursor:pointer; transition: all .35s;
-}
-#gate button:hover, #gate button:focus-visible { background:#b08c2e22; box-shadow:0 0 28px rgba(227,179,65,.35); outline-offset:4px; }
-#gate .skip { font-size:.82rem; color:#8d85a8; font-style:italic; }
-
 /* ---- progress + controls ---- */
 #progress { position:fixed; top:0; left:0; height:3px; width:0%; z-index:60;
   background: linear-gradient(90deg, var(--gold), var(--gold-bright)); transition: width .1s linear; }
@@ -162,15 +142,8 @@ a, button { outline-color: var(--gold); }
 </style>
 </head>
 <body>
-<noscript><style>#gate{display:none}</style></noscript>
 <div id="progress" role="presentation"></div>
 <div id="stars" aria-hidden="true"></div>
-
-<div id="gate">
-  <p class="oath">&ldquo;I solemnly swear<br>that I am up to no good.&rdquo;</p>
-  <button id="swear" type="button">Take the Oath</button>
-  <p class="skip">(the parchment will reveal itself)</p>
-</div>
 
 <button id="spell" type="button" aria-label="Toggle light and dark mode">&#10022;&nbsp;Nox</button>
 <button id="snitch" type="button" aria-label="Return to the top"><span class="wing l"></span><span class="ball"></span><span class="wing r"></span></button>
@@ -2043,9 +2016,6 @@ a, button { outline-color: var(--gold); }
 
 <script>
 (function () {
-  var gate = document.getElementById('gate');
-  document.getElementById('swear').addEventListener('click', function () { gate.classList.add('opened'); });
-
   var root = document.documentElement, spell = document.getElementById('spell');
   spell.addEventListener('click', function () {
     var nox = root.getAttribute('data-theme') === 'nox';
