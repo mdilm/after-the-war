@@ -1,2 +1,5 @@
 # oh-my-claudecode local state
 .omc/
+
+# local editor/preview config
+.claude/
