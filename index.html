@@ -18,12 +18,10 @@
   }
 
   /* ---------- keyframes ---------- */
-  @keyframes lsTwinkle { 0%,100% { opacity: .25 } 50% { opacity: 1 } }
   @keyframes lsDrift   { from { transform: translateY(0) } to { transform: translateY(-50%) } }
   @keyframes lsFloat   { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-7px) } }
   @keyframes lsGleam   { 0% { background-position: 0% 50% } 100% { background-position: 220% 50% } }
   @keyframes lsCandle  { 0%,100% { opacity: .55; transform: scale(1) translateX(-50%) } 50% { opacity: .82; transform: scale(1.06) translateX(-50%) } }
-  @keyframes lsPetal   { 0% { transform: translate(0,-16px) rotate(0); opacity: 0 } 12% { opacity: .85 } 100% { transform: translate(46px,470px) rotate(260deg); opacity: 0 } }
 
   /* ---------- section shell ---------- */
   .ls-section {
@@ -159,91 +157,109 @@
   .ls-meta { display: flex; align-items: center; gap: 14px; font-variant: small-caps; letter-spacing: .14em; font-size: 12px; }
   .ls-dot { width: 7px; height: 7px; border-radius: 50%; }
 
-  /* ===================== Your Name card ===================== */
-  .yn-card { background: #0c1330; cursor: default; animation-delay: .8s; }
-  .yn-half { position: absolute; top: 0; bottom: 0; width: 51%; overflow: hidden; }
-  .yn-city    { left: 0; transform: translateX(-16px); transition: transform 1.5s cubic-bezier(.3,.6,.2,1); }
-  .yn-country { right: 0; transform: translateX(16px);  transition: transform 1.5s cubic-bezier(.3,.6,.2,1); }
-  .yn-card.is-active .yn-city    { transform: translateX(0); }
-  .yn-card.is-active .yn-country { transform: translateX(0); }
+  /* ===================== Your Name card — Two Skies, One Comet ===================== */
+  @keyframes ynFloat   { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
+  @keyframes ynTwinkle { 0%,100% { opacity: .35 } 50% { opacity: 1 } }
+  @keyframes ynDrift   { from { transform: translateX(0) } to { transform: translateX(-40px) } }
+  @keyframes ynPulse   { 0%,100% { opacity: .85; filter: drop-shadow(0 0 10px rgba(255,228,150,.7)) } 50% { opacity: 1; filter: drop-shadow(0 0 22px rgba(255,228,150,.95)) } }
+  @keyframes ynShimmer { 0%,100% { opacity: .5; transform: translateX(-50%) scaleY(1) } 50% { opacity: .85; transform: translateX(-50%) scaleY(1.08) } }
+  @keyframes ynPetal   { 0% { transform: translate(0,-12px) rotate(0); opacity: 0 } 12% { opacity: .85 } 100% { transform: translate(40px,540px) rotate(280deg); opacity: 0 } }
 
-  .yn-sky-city    { position: absolute; inset: 0; background: linear-gradient(180deg, #1d2750 0%, #37406f 40%, #6b5c83 70%, #b07f6e 88%, #d99a63 100%); }
-  .yn-sky-country { position: absolute; inset: 0; background: linear-gradient(180deg, #26305f 0%, #5b5286 38%, #b9748a 66%, #e89a66 84%, #f4c07e 100%); }
+  .yn-card { background: #0b1430; cursor: default; animation: ynFloat 9s ease-in-out infinite; }
 
-  .yn-skyline {
-    position: absolute; left: 0; right: 0; bottom: 188px; height: 120px; background: #1a2148; opacity: .7;
-    clip-path: polygon(0 100%, 0 60%, 8% 60%, 8% 40%, 16% 40%, 16% 66%, 26% 66%, 26% 30%, 36% 30%, 36% 58%, 48% 58%, 48% 44%, 60% 44%, 60% 64%, 72% 64%, 72% 36%, 84% 36%, 84% 60%, 100% 60%, 100% 100%);
+  /* sky + atmosphere */
+  .yn-sky { position: absolute; inset: 0; background: linear-gradient(178deg, #0a1740 0%, #1d2a63 24%, #52376f 46%, #9a4670 62%, #cf6a6e 74%, #ee9a5f 86%, #f6c478 100%); }
+  .yn-milkyway {
+    position: absolute; left: -10%; top: 6%; width: 130%; height: 46%; transform: rotate(-8deg); pointer-events: none;
+    background: linear-gradient(118deg, transparent 30%, rgba(180,190,255,.16) 48%, rgba(220,200,255,.10) 56%, transparent 72%);
   }
-  .yn-bldg { position: absolute; bottom: 150px; }
-  .yn-bldg--1 { left: -6px;  width: 40px; height: 200px; background-color: #0c1126; background-image: radial-gradient(1.3px 1.3px at 6px 8px, rgba(255,206,128,.9), transparent);  background-size: 13px 18px; }
-  .yn-bldg--2 { left: 34px;  width: 30px; height: 150px; background-color: #0c1126; background-image: radial-gradient(1.3px 1.3px at 5px 7px, rgba(255,206,128,.85), transparent); background-size: 11px 16px; }
-  .yn-bldg--3 { left: 64px;  width: 46px; height: 240px; background-color: #0a0f22; background-image: radial-gradient(1.3px 1.3px at 7px 9px, rgba(255,212,140,.9), transparent);  background-size: 15px 19px; }
-  .yn-bldg--4 { left: 110px; width: 26px; height: 130px; background-color: #0c1126; background-image: radial-gradient(1.2px 1.2px at 5px 7px, rgba(255,206,128,.8), transparent);  background-size: 11px 15px; }
-  .yn-bldg--5 { left: 138px; width: 54px; height: 300px; background-color: #0a0f22; background-image: radial-gradient(1.4px 1.4px at 8px 10px, rgba(255,214,142,.92), transparent); background-size: 16px 20px; }
-  .yn-tower { position: absolute; left: 166px; bottom: 448px; width: 2px; height: 36px; background: #0a0f22; }
-  .yn-tower-light { position: absolute; left: 163px; bottom: 446px; width: 8px; height: 8px; border-radius: 50%; background: #ff6a4a; box-shadow: 0 0 8px 2px rgba(255,90,60,.8); }
+  .yn-stars {
+    position: absolute; left: 0; right: 0; top: 0; height: 60%; pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 8% 10%, #fff, transparent),
+      radial-gradient(1.2px 1.2px at 18% 22%, #fff, transparent),
+      radial-gradient(1px 1px at 27% 8%, #fff, transparent),
+      radial-gradient(1.3px 1.3px at 38% 16%, rgba(255,255,255,.95), transparent),
+      radial-gradient(1px 1px at 48% 6%, #fff, transparent),
+      radial-gradient(1px 1px at 58% 20%, #fff, transparent),
+      radial-gradient(1.4px 1.4px at 68% 11%, rgba(255,255,255,.9), transparent),
+      radial-gradient(1px 1px at 78% 24%, #fff, transparent),
+      radial-gradient(1.1px 1.1px at 86% 9%, #fff, transparent),
+      radial-gradient(1px 1px at 94% 18%, #fff, transparent);
+    animation: ynTwinkle 5s ease-in-out infinite;
+  }
+  .yn-cloud { position: absolute; pointer-events: none; border-radius: 50%; filter: blur(2px); }
+  .yn-cloud--l { left: -12%; bottom: 30%; width: 70%; height: 120px; background: radial-gradient(ellipse, rgba(255,170,150,.34), transparent 66%); animation: ynDrift 26s linear infinite alternate; }
+  .yn-cloud--r { right: -14%; bottom: 34%; width: 66%; height: 104px; background: radial-gradient(ellipse, rgba(206,120,150,.30), transparent 66%); animation: ynDrift 34s linear infinite alternate-reverse; }
 
-  .yn-hills-far  { position: absolute; left: -10%; right: -10%; bottom: 188px; height: 120px; background: #3a3a63; opacity: .65; clip-path: polygon(0 100%, 0 58%, 18% 38%, 40% 56%, 62% 30%, 82% 52%, 100% 40%, 100% 100%); }
-  .yn-hills-near { position: absolute; left: -10%; right: -10%; bottom: 150px; height: 130px; background: #10182e; clip-path: polygon(0 100%, 0 66%, 22% 48%, 46% 64%, 70% 44%, 90% 60%, 100% 52%, 100% 100%); }
-  .yn-torii { position: absolute; right: 46px; bottom: 206px; width: 54px; height: 62px; }
-  .yn-torii__post { position: absolute; bottom: 0; width: 5px; height: 54px; background: #b8362c; }
+  /* comet (Tiamat) */
+  .yn-comet { position: absolute; left: 21%; top: 13%; width: 150px; height: 3px; transform-origin: right center; rotate: 24deg; animation: ynPulse 5.5s ease-in-out infinite; transition: transform 2s cubic-bezier(.2,.55,.2,1); }
+  .yn-card.is-active .yn-comet { transform: translate(150px, 150px); }
+  .yn-comet__tail  { position: absolute; inset: 0; border-radius: 3px; background: linear-gradient(90deg, transparent, rgba(255,236,190,.12), rgba(255,246,214,.95)); }
+  .yn-comet__tail2 { position: absolute; right: 6px; top: -7px; width: 120px; height: 2px; rotate: -9deg; background: linear-gradient(90deg, transparent, rgba(150,200,255,.55)); }
+  .yn-comet__head  { position: absolute; right: -4px; top: -4px; width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #fff, #ffe9a8 50%, #eaa64e); box-shadow: 0 0 20px 6px rgba(255,228,150,.9); }
+
+  /* Tokyo skyline (left) */
+  .yn-haze { position: absolute; left: -4%; bottom: 140px; width: 64%; height: 90px; pointer-events: none; background: radial-gradient(ellipse at 40% 100%, rgba(255,178,120,.22), transparent 70%); }
+  .yn-far {
+    position: absolute; left: -10px; bottom: 158px; width: 240px; height: 120px;
+    background-color: rgba(86,66,98,.62);
+    background-image: radial-gradient(1px 1px at 4px 6px, rgba(255,206,150,.55), transparent); background-size: 9px 12px;
+    clip-path: polygon(0 100%,0 72%,6% 72%,6% 56%,12% 56%,12% 68%,18% 68%,18% 42%,24% 42%,24% 62%,32% 62%,32% 32%,40% 32%,40% 60%,48% 60%,48% 48%,56% 48%,56% 66%,64% 66%,64% 38%,72% 38%,72% 60%,80% 60%,80% 50%,88% 50%,88% 64%,100% 64%,100% 100%);
+    filter: blur(.4px); opacity: .85;
+  }
+  .yn-b { position: absolute; bottom: 148px; }
+  .yn-b1 { left: -8px; width: 32px; height: 142px; background-color: #141b3a; background-image: radial-gradient(1.2px 1.2px at 5px 7px, rgba(255,206,128,.8), transparent); background-size: 12px 17px; box-shadow: inset -1px 0 0 rgba(255,168,110,.16), inset 1px 0 0 rgba(0,0,0,.32); }
+  .yn-b1-ant { position: absolute; left: 6px; bottom: 290px; width: 2px; height: 18px; background: #141b3a; }
+  .yn-b2 { left: 24px; width: 28px; height: 206px; background-color: #0c1330; background-image: radial-gradient(1.2px 1.2px at 5px 7px, rgba(255,206,128,.78), transparent); background-size: 12px 16px; clip-path: polygon(0 100%,0 20%,22% 20%,22% 9%,40% 9%,40% 0,60% 0,60% 9%,78% 9%,78% 20%,100% 20%,100% 100%); }
+  .yn-b3 { left: 50px; width: 16px; height: 118px; background-color: #161d3e; }
+  .yn-b4 { left: 62px; width: 42px; height: 268px; background-color: #090e20; background-image: radial-gradient(1.3px 1.3px at 7px 9px, rgba(255,212,140,.82), transparent); background-size: 14px 18px; clip-path: polygon(0 100%,0 14%,30% 14%,42% 2%,58% 2%,70% 14%,100% 14%,100% 100%); }
+  .yn-b4-ant { position: absolute; left: 82px; bottom: 412px; width: 2px; height: 24px; background: #090e20; }
+  .yn-b4-beacon { position: absolute; left: 80px; bottom: 432px; width: 6px; height: 6px; border-radius: 50%; background: #ff6a4a; box-shadow: 0 0 8px 2px rgba(255,90,60,.8); }
+  .yn-b5 { left: 100px; width: 18px; height: 104px; background-color: #161d3e; }
+  .yn-b5-tank1 { position: absolute; left: 104px; bottom: 252px; width: 10px; height: 8px; background: #10162f; }
+  .yn-b5-tank2 { position: absolute; left: 107px; bottom: 260px; width: 4px; height: 5px; background: #10162f; }
+  .yn-tower { position: absolute; left: 120px; bottom: 148px; width: 46px; height: 184px; }
+  .yn-tower-beacon { position: absolute; left: 142px; bottom: 330px; width: 5px; height: 5px; border-radius: 50%; background: #ff6a4a; box-shadow: 0 0 7px 2px rgba(255,90,60,.8); }
+  .yn-b7 { left: 162px; width: 22px; height: 132px; background-color: #0d1430; }
+
+  /* countryside (right) */
+  .yn-ridge-far  { position: absolute; left: 40%; right: -10%; bottom: 188px; height: 128px; background: #7a5878; opacity: .5; clip-path: polygon(0 100%,0 64%,16% 42%,34% 60%,52% 34%,72% 56%,90% 40%,100% 50%,100% 100%); }
+  .yn-ridge-mid  { position: absolute; left: 42%; right: -10%; bottom: 168px; height: 130px; background: #3c335f; opacity: .85; clip-path: polygon(0 100%,0 62%,20% 46%,42% 64%,64% 38%,84% 58%,100% 48%,100% 100%); }
+  .yn-ridge-near { position: absolute; left: 40%; right: -10%; bottom: 148px; height: 120px; background: #0e1530; clip-path: polygon(0 100%,0 70%,24% 50%,48% 66%,72% 46%,92% 62%,100% 54%,100% 100%); }
+  .yn-torii { position: absolute; right: 48px; bottom: 206px; width: 52px; height: 60px; }
+  .yn-torii__post { position: absolute; bottom: 0; width: 5px; height: 52px; background: #bb3a2e; }
   .yn-torii__post--l { left: 7px; }
   .yn-torii__post--r { right: 7px; }
-  .yn-torii__top { position: absolute; left: 0; right: 0; top: 8px; height: 7px; background: #a82e25; border-radius: 3px; }
-  .yn-torii__beam { position: absolute; left: 4px; right: 4px; top: 18px; height: 5px; background: #b8362c; }
-  .yn-conifer { position: absolute; bottom: 198px; background: #0c1326; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
-  .yn-conifer--1 { right: 118px; width: 18px; height: 30px; }
-  .yn-conifer--2 { right: 106px; width: 14px; height: 24px; }
-  .yn-shrine { position: absolute; right: 18px; bottom: 200px; width: 30px; height: 14px; background: #0c1326; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .yn-torii__top  { position: absolute; left: 0; right: 0; top: 8px; height: 7px; background: #a82f25; border-radius: 3px; }
+  .yn-torii__beam { position: absolute; left: 4px; right: 4px; top: 18px; height: 5px; background: #bb3a2e; }
+  .yn-conifer { position: absolute; bottom: 196px; background: #0c1326; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .yn-conifer--1 { right: 114px; width: 18px; height: 30px; }
+  .yn-conifer--2 { right: 102px; width: 14px; height: 24px; }
 
-  .yn-stars {
-    position: absolute; left: 0; right: 0; top: 0; height: 60%; pointer-events: none; opacity: .85;
-    background-image:
-      radial-gradient(1px 1px at 14% 12%, #fff, transparent),
-      radial-gradient(1px 1px at 30% 8%, #fff, transparent),
-      radial-gradient(1.4px 1.4px at 46% 16%, rgba(255,255,255,.9), transparent),
-      radial-gradient(1px 1px at 62% 9%, #fff, transparent),
-      radial-gradient(1px 1px at 78% 18%, #fff, transparent),
-      radial-gradient(1.3px 1.3px at 90% 11%, rgba(255,255,255,.9), transparent),
-      radial-gradient(1px 1px at 22% 26%, #fff, transparent),
-      radial-gradient(1px 1px at 70% 30%, #fff, transparent);
-    animation: lsTwinkle 5s ease-in-out infinite;
-  }
-
+  /* seam of light + red thread */
   .yn-seam {
-    position: absolute; left: 51%; top: 0; bottom: 150px; width: 2px; transform: translateX(-50%);
-    background: linear-gradient(180deg, transparent, rgba(255,236,180,.85) 30%, rgba(255,214,140,.55));
-    opacity: .4; box-shadow: 0 0 0px rgba(255,224,150,.7); transition: all 1.2s ease;
+    position: absolute; left: 50%; top: 0; bottom: 150px; width: 2px; transform: translateX(-50%);
+    background: linear-gradient(180deg, transparent, rgba(255,236,180,.9) 30%, rgba(255,214,140,.5));
+    box-shadow: 0 0 22px rgba(255,224,150,.7); transition: box-shadow 1.2s ease;
   }
-  .yn-card.is-active .yn-seam { opacity: 1; box-shadow: 0 0 24px rgba(255,224,150,.7); }
+  .yn-card.is-active .yn-seam { box-shadow: 0 0 34px rgba(255,224,150,.95); }
+  .yn-thread { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; filter: drop-shadow(0 0 7px rgba(224,73,47,.8)); }
 
-  .yn-thread {
-    position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
-    opacity: .66; filter: drop-shadow(0 0 2px rgba(224,73,47,.4)); transition: all 1s ease;
-  }
-  .yn-card.is-active .yn-thread { opacity: 1; filter: drop-shadow(0 0 8px rgba(224,73,47,.9)); }
+  /* lake */
+  .yn-lake  { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; background: linear-gradient(180deg, #23335f, #0c1736 66%, #070e24); }
+  .yn-sheen { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; pointer-events: none; background: radial-gradient(60% 90% at 50% 0, rgba(255,210,140,.24), transparent 60%); }
+  .yn-refl  { position: absolute; bottom: 0; pointer-events: none; filter: blur(.5px); }
+  .yn-refl--1 { left: 18%; width: 2px; height: 64px; background: rgba(255,196,128,.4); }
+  .yn-refl--2 { left: 30%; width: 2px; height: 80px; background: rgba(255,210,140,.5); }
+  .yn-seam-refl { position: absolute; left: 50%; bottom: 0; width: 3px; height: 122px; transform: translateX(-50%); background: linear-gradient(180deg, rgba(255,228,170,.55), transparent); animation: ynShimmer 4.5s ease-in-out infinite; }
 
-  .yn-comet {
-    position: absolute; left: 16%; top: 12%; width: 190px; height: 3px;
-    transform-origin: right center; rotate: 26deg;
-    opacity: .92; transform: translate(0,0); transition: all .6s ease;
-  }
-  .yn-card.is-active .yn-comet { opacity: 1; transform: translate(120px, 176px); transition: all 2s cubic-bezier(.2,.55,.2,1); }
-  .yn-comet__tail { position: absolute; inset: 0; border-radius: 3px; background: linear-gradient(90deg, transparent, rgba(255,238,190,.14), rgba(255,244,212,.96)); }
-  .yn-comet__head { position: absolute; right: -4px; top: -3.5px; width: 11px; height: 11px; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #fff, #ffe9a8 52%, #e9a94e); box-shadow: 0 0 18px 5px rgba(255,224,150,.9); }
-
-  .yn-lake  { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; background: linear-gradient(180deg, #1c2a52, #0a1430 70%, #060d22); }
-  .yn-sheen { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; background: radial-gradient(60% 90% at 50% 0, rgba(255,210,140,.22), transparent 60%); }
-  .yn-reflect { position: absolute; left: 51%; bottom: 0; width: 3px; height: 120px; transform: translateX(-50%); background: linear-gradient(180deg, rgba(255,228,170,.5), transparent); }
-
-  .yn-petal { position: absolute; top: 0; border-radius: 80% 10% 80% 10%; }
-  .yn-petal--1 { left: 18%; width: 9px;  height: 7px; background: rgba(255,196,214,.85); animation: lsPetal 8.5s linear infinite; }
-  .yn-petal--2 { left: 44%; width: 7px;  height: 6px; background: rgba(255,206,222,.8);  animation: lsPetal 10s  linear infinite 1.4s; }
-  .yn-petal--3 { left: 66%; width: 10px; height: 7px; background: rgba(255,190,210,.8);  animation: lsPetal 9.2s linear infinite 2.6s; }
-  .yn-petal--4 { left: 82%; width: 7px;  height: 6px; background: rgba(255,204,220,.75); animation: lsPetal 11s  linear infinite 3.8s; }
-
-  .yn-scrim { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(8,10,28,.52) 0%, transparent 24%, transparent 60%, rgba(6,10,26,.82) 100%); }
-  .yn-jp { position: absolute; top: 120px; right: 22px; writing-mode: vertical-rl; font-family: 'Cormorant Garamond', serif; font-size: 22px; letter-spacing: .3em; color: rgba(247,222,150,.6); }
+  /* petals + scrim + JP title */
+  .yn-petal { position: absolute; top: 0; border-radius: 80% 10% 80% 10%; pointer-events: none; }
+  .yn-petal--1 { left: 20%; width: 9px; height: 7px; background: rgba(255,196,214,.85); animation: ynPetal 9s linear infinite; }
+  .yn-petal--2 { left: 64%; width: 8px; height: 6px; background: rgba(255,206,222,.8); animation: ynPetal 11s linear infinite 2.4s; }
+  .yn-scrim { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(8,10,28,.5) 0%, transparent 22%, transparent 58%, rgba(6,10,26,.84) 100%); }
+  .yn-jp { position: absolute; top: 118px; right: 20px; writing-mode: vertical-rl; font-family: 'Cormorant Garamond', serif; font-size: 23px; letter-spacing: .3em; color: rgba(247,222,150,.62); }
 
   .yn-eyebrow { color: #f3cf94; }
   .yn-card-title { color: #fbf3e4; text-shadow: 0 2px 18px rgba(0,0,0,.55); }
@@ -363,59 +379,70 @@
       </div>
     </a>
 
-    <!-- ===================== Your Name card ===================== -->
+    <!-- ===================== Your Name card — Two Skies, One Comet ===================== -->
     <div class="ls-card yn-card" role="img" aria-label="Two Skies, One Comet — a Your Name story, coming soon">
-      <!-- city half (left) -->
-      <div class="yn-half yn-city">
-        <div class="yn-sky-city"></div>
-        <div class="yn-skyline"></div>
-        <div class="yn-bldg yn-bldg--1"></div>
-        <div class="yn-bldg yn-bldg--2"></div>
-        <div class="yn-bldg yn-bldg--3"></div>
-        <div class="yn-bldg yn-bldg--4"></div>
-        <div class="yn-bldg yn-bldg--5"></div>
-        <div class="yn-tower"></div>
-        <div class="yn-tower-light"></div>
-      </div>
-
-      <!-- countryside half (right) -->
-      <div class="yn-half yn-country">
-        <div class="yn-sky-country"></div>
-        <div class="yn-hills-far"></div>
-        <div class="yn-hills-near"></div>
-        <div class="yn-torii">
-          <div class="yn-torii__post yn-torii__post--l"></div>
-          <div class="yn-torii__post yn-torii__post--r"></div>
-          <div class="yn-torii__top"></div>
-          <div class="yn-torii__beam"></div>
-        </div>
-        <div class="yn-conifer yn-conifer--1"></div>
-        <div class="yn-conifer yn-conifer--2"></div>
-        <div class="yn-shrine"></div>
-      </div>
-
+      <div class="yn-sky"></div>
+      <div class="yn-milkyway"></div>
       <div class="yn-stars"></div>
-      <div class="yn-seam"></div>
+      <div class="yn-cloud yn-cloud--l"></div>
+      <div class="yn-cloud yn-cloud--r"></div>
 
-      <svg class="yn-thread" viewBox="0 0 360 580" preserveAspectRatio="none">
-        <path d="M120,300 C160,270 200,330 240,300" fill="none" stroke="#e0492f" stroke-width="2.4" stroke-linecap="round"></path>
-        <circle cx="183" cy="299" r="4.5" fill="none" stroke="#f0603f" stroke-width="2.2"></circle>
-      </svg>
-
+      <!-- comet -->
       <div class="yn-comet">
         <div class="yn-comet__tail"></div>
+        <div class="yn-comet__tail2"></div>
         <div class="yn-comet__head"></div>
       </div>
 
+      <!-- Tokyo skyline (left) -->
+      <div class="yn-haze"></div>
+      <div class="yn-far"></div>
+      <div class="yn-b yn-b1"></div>
+      <div class="yn-b1-ant"></div>
+      <div class="yn-b yn-b2"></div>
+      <div class="yn-b yn-b3"></div>
+      <div class="yn-b yn-b4"></div>
+      <div class="yn-b4-ant"></div>
+      <div class="yn-b4-beacon"></div>
+      <div class="yn-b yn-b5"></div>
+      <div class="yn-b5-tank1"></div>
+      <div class="yn-b5-tank2"></div>
+      <svg class="yn-tower" viewBox="0 0 46 184" preserveAspectRatio="none" aria-hidden="true">
+        <path fill="#0a0f22" d="M21,4 L25,4 L25,40 L31,46 L31,52 L27,54 L29,78 L35,84 L35,92 L30,94 L42,184 L29,184 L25,98 L21,98 L17,184 L4,184 L16,94 L11,92 L11,84 L17,78 L19,54 L15,52 L15,46 L21,40 Z"></path>
+      </svg>
+      <div class="yn-tower-beacon"></div>
+      <div class="yn-b yn-b7"></div>
+
+      <!-- countryside (right) -->
+      <div class="yn-ridge-far"></div>
+      <div class="yn-ridge-mid"></div>
+      <div class="yn-ridge-near"></div>
+      <div class="yn-torii">
+        <div class="yn-torii__post yn-torii__post--l"></div>
+        <div class="yn-torii__post yn-torii__post--r"></div>
+        <div class="yn-torii__top"></div>
+        <div class="yn-torii__beam"></div>
+      </div>
+      <div class="yn-conifer yn-conifer--1"></div>
+      <div class="yn-conifer yn-conifer--2"></div>
+
+      <!-- seam of light + red thread -->
+      <div class="yn-seam"></div>
+      <svg class="yn-thread" viewBox="0 0 380 580" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M120,300 C162,268 206,330 250,298" fill="none" stroke="#e0492f" stroke-width="2.4" stroke-linecap="round"></path>
+        <circle cx="190" cy="300" r="4.5" fill="none" stroke="#f0603f" stroke-width="2.2"></circle>
+      </svg>
+
+      <!-- lake -->
       <div class="yn-lake"></div>
       <div class="yn-sheen"></div>
-      <div class="yn-reflect"></div>
+      <div class="yn-refl yn-refl--1"></div>
+      <div class="yn-refl yn-refl--2"></div>
+      <div class="yn-seam-refl"></div>
 
+      <!-- petals + scrim + JP title -->
       <div class="yn-petal yn-petal--1"></div>
       <div class="yn-petal yn-petal--2"></div>
-      <div class="yn-petal yn-petal--3"></div>
-      <div class="yn-petal yn-petal--4"></div>
-
       <div class="yn-scrim"></div>
       <div class="yn-jp">君の名は</div>
 
