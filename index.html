@@ -3,12 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Summer After the War &amp; Steady as Tuesday</title>
-<link rel="canonical" href="after-the-war.html">
-<meta http-equiv="refresh" content="0; url=after-the-war.html">
-<script>location.replace('after-the-war.html');</script>
+<title>Stories</title>
+<style>
+:root {
+  --parchment: #efe4cb;
+  --parchment-deep: #e4d5b2;
+  --ink: #2b2118;
+  --ink-soft: #5a4a38;
+  --gold: #a8801f;
+  --gold-bright: #8a6512;
+  --maroon: #6e1f2e;
+  --rule: #c9b585;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', Palatino, serif;
+  background: radial-gradient(ellipse 120% 90% at 50% 0%, var(--parchment) 0%, var(--parchment-deep) 100%) fixed;
+  color: var(--ink);
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+/* ---- header ---- */
+header {
+  text-align: center;
+  padding: 5rem 1.5rem 3.5rem;
+}
+
+.site-title {
+  font-variant: small-caps;
+  font-weight: normal;
+  letter-spacing: .2em;
+  font-size: clamp(2rem, 6vw, 3rem);
+  color: var(--ink);
+  margin-bottom: .6rem;
+}
+
+.site-sub {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+}
+
+.header-rule {
+  width: 120px;
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 1.8rem auto 0;
+}
+
+/* ---- series grid ---- */
+main {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem;
+}
+
+.section-label {
+  font-variant: small-caps;
+  letter-spacing: .32em;
+  font-size: .78rem;
+  color: var(--gold-bright);
+  text-align: center;
+  margin-bottom: 2.4rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  gap: 1.8rem;
+}
+
+/* ---- card ---- */
+.card {
+  background: rgba(255, 255, 255, .28);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 2rem 2rem 1.6rem;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
+  transition: box-shadow .3s, border-color .3s, transform .25s;
+  position: relative;
+}
+
+.card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 4px 28px rgba(168, 128, 31, .18);
+  transform: translateY(-2px);
+}
+
+.card.coming-soon {
+  opacity: .72;
+  cursor: default;
+  pointer-events: none;
+}
+
+.card-fandom {
+  font-variant: small-caps;
+  letter-spacing: .22em;
+  font-size: .72rem;
+  color: var(--gold-bright);
+}
+
+.card-title {
+  font-variant: small-caps;
+  font-weight: normal;
+  letter-spacing: .06em;
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.card-sub {
+  font-style: italic;
+  font-size: .9rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.card-rule {
+  width: 50px;
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: .2rem 0;
+}
+
+.card-meta {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  font-variant: small-caps;
+  letter-spacing: .14em;
+  font-size: .72rem;
+  color: var(--ink-soft);
+  margin-top: auto;
+}
+
+.badge {
+  display: inline-block;
+  font-variant: small-caps;
+  letter-spacing: .16em;
+  font-size: .65rem;
+  padding: .2rem .7rem;
+  border-radius: 2px;
+  border: 1px solid currentColor;
+}
+
+.badge-complete { color: #3a6b3a; }
+.badge-coming   { color: var(--ink-soft); }
+
+/* ---- footer ---- */
+footer {
+  text-align: center;
+  padding: 2rem 1rem 3rem;
+  font-size: .8rem;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--rule);
+  font-style: italic;
+  max-width: 64rem;
+  margin: 0 auto;
+}
+</style>
 </head>
 <body>
-<p>Redirecting to <a href="after-the-war.html">the reader</a>&hellip;</p>
+
+<header>
+  <h1 class="site-title">Stories</h1>
+  <p class="site-sub">Fanfiction, collected.</p>
+  <hr class="header-rule">
+</header>
+
+<main>
+  <p class="section-label">Series</p>
+
+  <div class="grid">
+
+    <!-- Harry Potter -->
+    <a class="card" href="after-the-war/">
+      <span class="card-fandom">Harry Potter</span>
+      <h2 class="card-title">The Summer After the War &amp; Steady as Tuesday</h2>
+      <hr class="card-rule">
+      <p class="card-sub">Two novellas following the Weasley family and their circle through the summers after the Battle of Hogwarts — grief, letters, ordinary days, and the slow work of beginning again.</p>
+      <div class="card-meta">
+        <span class="badge badge-complete">Complete</span>
+        <span>Two books</span>
+      </div>
+    </a>
+
+    <!-- Kimi No Na Wa (placeholder) -->
+    <div class="card coming-soon">
+      <span class="card-fandom">Kimi No Na Wa &middot; Your Name</span>
+      <h2 class="card-title">Coming Soon</h2>
+      <hr class="card-rule">
+      <p class="card-sub">A story set in the world of Makoto Shinkai's <em>Your Name</em>. More details to follow.</p>
+      <div class="card-meta">
+        <span class="badge badge-coming">Coming Soon</span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  These are works of fan fiction. All original characters and worlds belong to their respective creators.
+</footer>
+
 </body>
 </html>
