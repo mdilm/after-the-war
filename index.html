@@ -543,15 +543,21 @@
   function rnd(n) { var x = Math.sin(n * 97.13) * 43758.5453; return x - Math.floor(x); }
 
   var stacks = document.getElementById('ls-stacks');
-  if (stacks) {
+
+  function buildWall() {
+    if (!stacks) return;
+    // Generate enough spines to overflow the widest row possible. Smallest
+    // spine is 15px + 3px gap, so this count guarantees the shelf fills any
+    // viewport width; the row's overflow:hidden clips the remainder.
+    var perRow = Math.ceil(window.innerWidth / 18) + 2;
     var frag = document.createDocumentFragment();
     for (var r = 0; r < 6; r++) {
       var shelf = document.createElement('div');
       shelf.className = 'ls-shelf';
       var books = document.createElement('div');
       books.className = 'ls-books';
-      for (var i = 0; i < 30; i++) {
-        var k = r * 60 + i;
+      for (var i = 0; i < perRow; i++) {
+        var k = r * 1000 + i;
         var w = 15 + Math.floor(rnd(k) * 24);
         var h = 118 + Math.floor(rnd(k + 7) * 52);
         var c = palette[Math.floor(rnd(k + 3) * palette.length)];
@@ -572,8 +578,18 @@
       shelf.appendChild(board);
       frag.appendChild(shelf);
     }
+    stacks.innerHTML = '';
     stacks.appendChild(frag);
   }
+
+  buildWall();
+
+  // Re-fill when the viewport widens past the current run of books.
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(buildWall, 150);
+  });
 
   // ---- hover reveals ----
   var cards = document.querySelectorAll('.ls-card');
