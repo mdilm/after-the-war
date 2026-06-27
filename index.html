@@ -165,7 +165,7 @@
   @keyframes ynShimmer { 0%,100% { opacity: .5; transform: translateX(-50%) scaleY(1) } 50% { opacity: .85; transform: translateX(-50%) scaleY(1.08) } }
   @keyframes ynPetal   { 0% { transform: translate(0,-12px) rotate(0); opacity: 0 } 12% { opacity: .85 } 100% { transform: translate(40px,540px) rotate(280deg); opacity: 0 } }
 
-  .yn-card { background: #0b1430; cursor: default; animation: ynFloat 9s ease-in-out infinite; }
+  .yn-card { background: #0b1430; animation: ynFloat 9s ease-in-out infinite; }
 
   /* sky + atmosphere */
   .yn-sky { position: absolute; inset: 0; background: linear-gradient(178deg, #0a1740 0%, #1d2a63 24%, #52376f 46%, #9a4670 62%, #cf6a6e 74%, #ee9a5f 86%, #f6c478 100%); }
@@ -263,13 +263,12 @@
 
   .yn-eyebrow { color: #f3cf94; }
   .yn-card-title { color: #fbf3e4; text-shadow: 0 2px 18px rgba(0,0,0,.55); }
-  .yn-blurb { margin: 0 0 16px; font-size: 14.5px; line-height: 1.6; color: #e2d6c8; text-shadow: 0 1px 10px rgba(0,0,0,.6); }
-  .yn-tag { color: #f3cf94; border: 1px solid rgba(243,207,148,.45); }
   .yn-hairline { background: linear-gradient(90deg, rgba(243,207,148,.5), transparent); }
   .yn-meta { color: #cbbfaf; }
-  .yn-meta .soon { display: inline-flex; align-items: center; gap: 6px; color: #f0a87e; }
-  .yn-meta .soon .ls-dot { background: #f0a87e; }
-  .yn-meta .author { margin-left: auto; color: #9aa0b8; font-style: italic; }
+  .yn-meta .status { display: inline-flex; align-items: center; gap: 6px; color: #f0a87e; }
+  .yn-meta .status .ls-dot { background: #f0a87e; }
+  .yn-meta .begin { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; color: #f3cf94; font-weight: 500; }
+  .yn-meta .begin .arrow { font-size: 15px; }
 
   /* ===================== future volume ===================== */
   .ls-future {
@@ -380,7 +379,7 @@
     </a>
 
     <!-- ===================== Your Name card — Two Skies, One Comet ===================== -->
-    <div class="ls-card yn-card" role="img" aria-label="Two Skies, One Comet — a Your Name story, coming soon">
+    <a class="ls-card yn-card" href="after-the-twilight/" aria-label="Two Skies, One Comet — read the Your Name story">
       <div class="yn-sky"></div>
       <div class="yn-milkyway"></div>
       <div class="yn-stars"></div>
@@ -452,20 +451,14 @@
       </div>
 
       <div class="ls-bottom">
-        <p class="yn-blurb">Makoto Shinkai's twilight — a city boy and a mountain-town girl, one comet overhead, and the red thread that knots two lives across the dark.</p>
-        <div class="ls-tags">
-          <span class="ls-tag yn-tag">Romance</span>
-          <span class="ls-tag yn-tag">Fate &amp; Musubi</span>
-          <span class="ls-tag yn-tag">Kataware-Doki</span>
-        </div>
         <div class="ls-hairline yn-hairline"></div>
         <div class="ls-meta yn-meta">
-          <span class="soon"><span class="ls-dot"></span>Coming soon</span>
-          <span>In progress</span>
-          <span class="author">Makoto Shinkai</span>
+          <span class="status"><span class="ls-dot"></span>Ongoing</span>
+          <span>Six chapters</span>
+          <span class="begin">Begin reading <span class="arrow">→</span></span>
         </div>
       </div>
-    </div>
+    </a>
 
     <!-- ===================== future volume ===================== -->
     <div class="ls-future" aria-hidden="true">

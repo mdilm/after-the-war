@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>After the Twilight — A Your Name story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #e7dcc6;
+    --ink-soft: #b6aec6;
+    --cream: #fbf3e4;
+    --gold: #f3cf94;
+    --gold-deep: #caa05a;
+    --thread: #e0492f;
+    --rule: rgba(243,207,148,.28);
+    --sel: rgba(243,207,148,.22);
+    --bg: radial-gradient(135% 95% at 50% -12%, #2b234f 0%, #161b3f 40%, #0b1330 78%, #080d23 100%);
+  }
+  html[data-theme="dawn"] {
+    --ink: #34304e;
+    --ink-soft: #6c6485;
+    --cream: #2a2148;
+    --gold: #9a6a2e;
+    --gold-deep: #b0873a;
+    --thread: #c23a2a;
+    --rule: rgba(120,90,40,.26);
+    --sel: rgba(180,140,80,.22);
+    --bg: radial-gradient(135% 95% at 50% -12%, #fdf4e6 0%, #f5e9d8 46%, #efdfca 100%);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg) fixed;
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1.14rem;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    transition: color .5s ease;
+  }
+  ::selection { background: var(--sel); }
+
+  @keyframes twinkle { 0%,100% { opacity: .2 } 50% { opacity: .9 } }
+  @keyframes pulse   { 0%,100% { opacity: .85; filter: drop-shadow(0 0 9px rgba(255,224,150,.6)) } 50% { opacity: 1; filter: drop-shadow(0 0 20px rgba(255,224,150,.95)) } }
+  @keyframes petal   { 0% { transform: translate(0,-20px) rotate(0); opacity: 0 } 12% { opacity: .8 } 100% { transform: translate(48px,640px) rotate(300deg); opacity: 0 } }
+  @keyframes hover-comet { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-7px) } }
+
+  /* ---- ambient sky ---- */
+  #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 1s; }
+  html[data-theme="dusk"] #stars { opacity: 1; }
+  .star { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #f4ecd2; animation: twinkle 5s ease-in-out infinite; }
+
+  /* ---- progress + controls ---- */
+  #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 60;
+    background: linear-gradient(90deg, var(--gold), var(--thread)); transition: width .1s linear; }
+  #twi {
+    position: fixed; top: 1rem; right: 1rem; z-index: 60; font-family: inherit; font-variant: small-caps;
+    letter-spacing: .16em; font-size: .9rem; color: var(--gold); background: transparent;
+    border: 1px solid var(--rule); border-radius: 2px; padding: .42rem 1rem; cursor: pointer; transition: all .3s;
+  }
+  #twi:hover, #twi:focus-visible { border-color: var(--gold); box-shadow: 0 0 16px rgba(243,207,148,.25); }
+
+  /* ---- comet back-to-top ---- */
+  #totop { position: fixed; bottom: 1.6rem; right: 1.4rem; z-index: 60; width: 46px; height: 32px; border: none;
+    background: transparent; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .5s; }
+  #totop.show { opacity: .9; pointer-events: auto; animation: hover-comet 3.4s ease-in-out infinite; }
+
+  /* ---- layout ---- */
+  main { position: relative; z-index: 1; max-width: 40rem; margin: 0 auto; padding: 0 1.4rem 7rem; }
+
+  /* ---- frontispiece ---- */
+  .frontispiece { position: relative; min-height: 94vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; gap: 1.2rem; padding-top: 3rem; overflow: hidden; }
+  .comet-art { display: block; }
+  .comet-art .head { filter: drop-shadow(0 0 10px rgba(255,224,150,.9)); animation: pulse 5.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  .fp-eyebrow { font-variant: small-caps; letter-spacing: .34em; font-size: .82rem; color: var(--gold-deep); }
+  h1.title {
+    margin: .2rem 0 0; font-family: 'Cormorant Garamond', serif; font-weight: 600;
+    font-size: clamp(2.6rem, 8vw, 4.4rem); line-height: 1.02; letter-spacing: .01em;
+    background: linear-gradient(100deg, #f3cf94, #fbf3e4 30%, #e7a86a 55%, #fbf3e4 78%, #f3cf94);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+  }
+  html[data-theme="dawn"] h1.title { background: none; -webkit-text-fill-color: #3a2a5a; color: #3a2a5a; }
+  .subtitle { font-style: italic; color: var(--ink-soft); font-size: 1.12rem; }
+  .epigraph { font-style: italic; color: var(--ink-soft); max-width: 30ch; margin-top: .4rem; }
+  .meta { font-variant: small-caps; letter-spacing: .2em; font-size: .78rem; color: var(--gold-deep); margin-top: 1rem; }
+  .rule { width: 150px; border: none; border-top: 1px solid var(--rule); margin: .6rem auto; }
+  .jp-vert { position: absolute; top: 8%; right: 4%; writing-mode: vertical-rl;
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(20px, 4vw, 30px); letter-spacing: .3em; color: rgba(243,207,148,.45); }
+
+  /* contents */
+  .contents { margin-top: 1.4rem; display: flex; flex-direction: column; gap: .35rem; }
+  .contents a { color: var(--ink-soft); text-decoration: none; font-variant: small-caps; letter-spacing: .1em;
+    font-size: .95rem; transition: color .25s; }
+  .contents a:hover { color: var(--gold); }
+  .contents .num { color: var(--gold-deep); margin-right: .5rem; }
+
+  /* petals (frontispiece only) */
+  .petal { position: absolute; top: 0; border-radius: 80% 10% 80% 10%; background: rgba(255,196,214,.8); pointer-events: none; }
+  html[data-theme="dawn"] .petal { background: rgba(216,120,150,.5); }
+
+  /* ---- chapters ---- */
+  .chap-head { text-align: center; margin: 5.5rem 0 3rem; }
+  .chap-orn { color: var(--gold); opacity: .7; font-size: 1.1rem; letter-spacing: .4em; }
+  .chap-eyebrow { font-variant: small-caps; letter-spacing: .32em; font-size: .8rem; color: var(--gold-deep); margin-top: .6rem; }
+  .chap-head h2 { margin: .5rem 0 0; font-family: 'Cormorant Garamond', serif; font-weight: 600;
+    font-size: clamp(1.6rem, 4.6vw, 2.2rem); line-height: 1.2; color: var(--cream); }
+
+  /* POV byline */
+  .pov { display: flex; align-items: center; justify-content: center; gap: .7rem;
+    margin: 2.6rem 0 1.7rem; font-variant: small-caps; letter-spacing: .32em; font-size: .82rem; color: var(--gold); }
+  .pov::before { content: ""; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--thread); }
+
+  p { margin: 0 0 1.35rem; }
+  em { font-style: italic; }
+
+  /* scene divider — a musubi knot */
+  .break { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 2.7rem 0; }
+  .break .l, .break .r { width: 64px; height: 1px; }
+  .break .l { background: linear-gradient(90deg, transparent, var(--gold-deep)); }
+  .break .r { background: linear-gradient(90deg, var(--gold-deep), transparent); }
+  .break .knot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--thread); flex: 0 0 auto; }
+
+  .finis { text-align: center; padding: 4rem 0 1rem; font-variant: small-caps; letter-spacing: .34em; color: var(--gold-deep); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+<div id="progress" role="presentation"></div>
+<div id="stars" aria-hidden="true"></div>
+
+<button id="twi" type="button" aria-label="Toggle twilight and dawn reading mode">&#9728;&nbsp;Dawn</button>
+<button id="totop" type="button" aria-label="Return to the top">
+  <svg viewBox="0 0 60 40" width="46" height="32" aria-hidden="true">
+    <path d="M6 30 C24 24 38 16 50 8" stroke="#f3cf94" stroke-width="3" fill="none" stroke-linecap="round" opacity=".85"/>
+    <circle cx="52" cy="7" r="5" fill="#ffe9a8"/>
+  </svg>
+</button>
+
+<main>
+  <header class="frontispiece">
+    <div class="jp-vert" aria-hidden="true">君の名は</div>
+    <svg class="comet-art" viewBox="0 0 220 120" width="200" height="110" aria-hidden="true">
+      <defs>
+        <linearGradient id="ct" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#f3cf94" stop-opacity="0"/>
+          <stop offset="1" stop-color="#fbf3e4" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="ct2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#9ac8ff" stop-opacity="0"/>
+          <stop offset="1" stop-color="#9ac8ff" stop-opacity=".55"/>
+        </linearGradient>
+        <radialGradient id="ch" cx="38%" cy="32%" r="70%">
+          <stop offset="0" stop-color="#fff"/>
+          <stop offset="55%" stop-color="#ffe9a8"/>
+          <stop offset="100%" stop-color="#eaa64e"/>
+        </radialGradient>
+      </defs>
+      <path d="M20 96 C80 76, 132 52, 184 26" stroke="url(#ct)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M42 102 C92 86, 134 64, 182 30" stroke="url(#ct2)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <circle class="head" cx="188" cy="24" r="8" fill="url(#ch)"/>
+    </svg>
+    <div class="fp-eyebrow">Your Name &middot; 君の名は</div>
+    <h1 class="title">After the Twilight</h1>
+    <p class="subtitle">Two Skies, One Comet</p>
+    <hr class="rule">
+    <p class="epigraph">&ldquo;Musubi — the thread that ties, the knot that connects.&rdquo;</p>
+    <p class="meta" id="meta">Six chapters &middot; 11,743 words &middot; about 53 minutes</p>
+
+    <nav class="contents" aria-label="Contents">
+      <a href="#ch1"><span class="num">I</span>The Top of the Stairs</a>
+      <a href="#ch2"><span class="num">II</span>The People Who Knew Us</a>
+      <a href="#ch3"><span class="num">III</span>What Taki Was Looking For</a>
+      <a href="#ch4"><span class="num">IV</span>What the Old Ones See</a>
+      <a href="#ch5"><span class="num">V</span>The Train West</a>
+      <a href="#ch6"><span class="num">VI</span>Kataware-doki</a>
+    </nav>
+  </header>
+
+  <!-- ============ Chapter One ============ -->
+  <header class="chap-head" id="ch1">
+    <div class="chap-orn">&#10022;</div>
+    <div class="chap-eyebrow">Chapter One</div>
+    <h2>The Top of the Stairs</h2>
+  </header>
+  <div class="pov">Taki</div>
+
+  <p>What's your name?</p>
+  <p>She and I ask the question at the same time. Such a simple question and yet asking for it feels like the most important thing I've ever done. My voice cracks on the last syllable. I'm crying. I didn't notice when it started.</p>
+  <p>She's a few steps below me on the stairs now, the streets of Tokyo falling away behind her, that cord the color of dusk holding back her hair. Her face contorts with the effort of withstanding the assault of multiple clashing emotions at once. Both sadness and yearning battling with hope and joy. She's crying too.</p>
+  <p>"Mitsuha," she manages to say at last.</p>
+  <p>The name goes through me like an electric shock. I don't immediately know it. In fact, I'm not sure if I've ever heard it. But, somewhere underneath my sternum, in a place that has nothing to do with memory, something says yes with such force that my knees nearly give.</p>
+  <p>"Mitsuha," I repeat, just to feel it in my own mouth.</p>
+  <p>"And you're—" She hesitates.</p>
+  <p>"Taki," I tell her. "I'm Taki."</p>
+  <p>There seems to be no immediate recognition in her face but she continues, "I don't know how I could possibly know this. But I've been looking for you. For years. I'd be on a train, or crossing a street, and I'd think maybe today. And I never knew who or what I was looking for." She wipes her face with the back of her wrist, a quick fierce motion. "It was you. It was always you."</p>
+  <p>We say each other's names again, both of us, almost at the same time, and then we laugh; a wet, undignified, hiccuping laugh because we've just met and now we're standing too close and we're holding hands, somehow, I don't remember reaching for her, and a businessman with an umbrella has to step around us with a disdainful look.</p>
+  <p>"This is insane," Mitsuha says, laughing, gulping air. "I don't even— I just got off the train. I wasn't going anywhere near here. I got off three stops early. I don't do that."</p>
+  <p>"I dashed off mine," I say. "I saw you through the window."</p>
+  <p>"I saw you too." Her eyes go wide. "I thought I'd imagined it."</p>
+  <p>We stand there, hands clasped, and the strangeness of it slowly catches up with the joy. Because here is the thing I can't say out loud yet, the thing I can see her starting to feel too:</p>
+  <p>I don't know her.</p>
+  <p>I know she matters more than almost anyone I've ever met. I know that finding her is the answer to a question I've apparently been asking my whole adult life without hearing myself ask it. And I do not know a single true thing about her. Not where she's from. Not why my chest aches like a bruise when she looks at me. Not why the name Mitsuha feels not like something new, but like something old finally being returned to me.</p>
+  <p>"Hey," I say carefully. "Can I— Do you want to get coffee, or— I realize that's an absurd thing to say to someone you've been crying at on a public staircase—"</p>
+  <p>"Yes," she says, before I finish. "God, yes. I have so many questions and I don't know what a single one of them is."</p>
+  <p>That, I think, is the most accurate thing either of us has said.</p>
+
+  <div class="break"><span class="l"></span><span class="knot"></span><span class="r"></span></div>
+
+  <p>We end up at a café near the station, the kind with too-bright lighting and a tired plant in the window, and we sit across from each other and neither of us touches our drinks for a long time. Now that we're still, now that there's a table between us, the awkwardness arrives in full. We are strangers. We have each other's names and nothing else, and the weeping on the stairs is already slipping into the land of dreams.</p>
+  <p>"Okay," Mitsuha says. She wraps both hands around her cup. "Let's just— let's be normal for a second. Where do you live?"</p>
+  <p>"Tokyo. I grew up here. Just finished university, sort of stumbling through job hunting." I gesture vaguely at my suit, which I'm still not used to. "Construction, design, I'm not picky at this point. You?"</p>
+  <p>"I work in the city at a jeweler. Started a couple years ago." She names a mall I half recognize. "But I'm not from here." She hesitates, and I watch some shadow pass behind her eyes. "I'm from Gifu. The mountains. A town that—" She stops. Her hand tightens on the cup. "A town that isn't there anymore."</p>
+  <p>The café noise seems to recede. I have the sudden, vertiginous sense of standing at the edge of something — that if I lean forward even slightly I'll fall in. I decide to lean in.</p>
+  <p>"Itomori," I say.</p>
+  <p>I don't decide to say it. It's just there, surfacing out of a dark I didn't know I was holding.</p>
+  <p>Everyone knows Itomori, of course. The comet that split and dropped a fragment on a mountain town — it was the disaster of the decade, the kind of thing they still run anniversary specials about, aerial footage of the gourd-shaped lake, the miracle evacuation, five hundred lives spared by a freak coincidence of timing. I've seen the documentaries. Everyone has. Saying the name out loud shouldn't mean anything.</p>
+  <p>But Mitsuha goes very still. The blood leaves her face — and it isn't the flat surprise of <em>how does a stranger know that famous place</em>. It's something else, something closer to fear.</p>
+  <p>"You said it like it means something to you," she whispers. "I told you mountains, I told you Gifu. I didn't say the name. And you didn't say it the way people say it — like a news story, like that sad thing that happened to those poor people. You said it like you know it. Like you've stood there." Her voice climbs and shakes. "Have you been to my town, Taki?"</p>
+  <p>"Yes," I say. "I don't know how I know it the way I know it. But I—" I press the heel of my hand against my forehead, trying to chase the thing that's right there, just past the edge of recall, a word on the tip of a tongue that isn't mine. "I went looking for it once. Years ago. Took a train all the way out to Gifu, chasing... I couldn't even have told you what. Here's the craziest part: I drew it first. Before I went. I had notebooks full of a town I'd never seen: the lake, the ridge line, this little shrine up on the mountain. I drew it and then I went looking and it was already gone, it was already water, and I stood at the rim of that lake and I—"</p>
+  <p>"Stop," she says. Not unkindly. She's pressing both hands flat to the table now, like she's bracing against a tilt only she can feel. "Stop, I can't— My heart's going to come out of my chest."</p>
+  <p>We sit in the ringing quiet.</p>
+  <p>"Something happened to us," Mitsuha says finally, very quietly. "Didn't it. Something real. And someone took it. Or we lost it. Or—"</p>
+  <p>"Or we gave it up," I say. I don't know where the words come from. They just feel right. "It feels like — like something we gave up as payment."</p>
+  <p>She looks at me for a long moment. Then she reaches across the table, very deliberately, and takes my hand again — not in the swept-up emotion of the stairs but on purpose.</p>
+  <p>"I don't remember you," Mitsuha says. "And I have never in my life been so sure of anyone. Both of those things are true."</p>
+  <p>"Yeah." My throat is tight. "Yeah. Me too."</p>
+  <p>"So." She takes a breath, steadies. The shake leaves her voice and something firmer comes in, a quiet strength I'll come to learn over the next few days. "So we figure it out. Together. We find out what happened to us."</p>
+  <p>Outside the café window, the last of the cherry blossoms are coming loose and turning in the air, and I have the strangest feeling — not a memory, nothing so solid as a memory, just its shadow falling across me — that I have watched petals fall like this before, somewhere high up, somewhere that smelled of cut grass and mountain water, standing in a body that wasn't mine, my heart breaking for reasons I couldn't fathom.</p>
+  <p>"Together," I say.</p>
+  <p>We drink our cold coffee. We trade phone numbers like normal people. And the whole time, under the table, neither of us lets go of the other's hand.</p>
+
+  <!-- ============ Chapter Two ============ -->
+  <header class="chap-head" id="ch2">
+    <div class="chap-orn">&#10022;</div>
+    <div class="chap-eyebrow">Chapter Two</div>
+    <h2>The People Who Knew Us</h2>
+  </header>
+  <div class="pov">Mitsuha</div>
+
+  <p>I don't sleep that night, and I don't really mind.</p>
+  <p>I lie in my tiny apartment with the city humming outside the window and I run the whole café conversation again and again, and every time I get to the part where he said Itomori — said it like a place he'd stood in, not a tragedy he'd watched on TV — my stomach drops the same way it did the first time. By four in the morning I've stopped trying to make it make sense. I just lie there holding my own phone against my chest like it's warm, because his number is in it, because tomorrow is real, because for the first time in many years the deep melancholy I had learned to live with had lifted.</p>
+  <p>That's the part I keep circling. Not the mystery. The fact that I'm not sad.</p>
+  <p>I hadn't told anyone how long I had suffered. You don't, do you. You just get up and go to work and answer texts and laugh at the right moments, and the whole time there's this low gray weather inside you, this sense of having misplaced something enormous and being unable to describe what's missing. I'd assumed it was just — adulthood. Tokyo. Leaving home. The disaster. Take your pick; everyone our age from Itomori carries something. I figured mine was ordinary grief wearing a strange coat.</p>
+  <p>And then Taki and I chased each other through Tokyo and now the gray is gone and I can hear birds.</p>
+  <p>I text Sayaka before I've even decided to. <em>Are you in the city this weekend. I have to tell you something. You're going to think I've lost my mind.</em></p>
+  <p>She writes back at 7 a.m.: <em>You lost it years ago. Yes. Sunday.</em></p>
+
+  <div class="break"><span class="l"></span><span class="knot"></span><span class="r"></span></div>
+
+  <p>Taki and I meet again on Wednesday. And Thursday. By Friday it isn't a question anymore whether we'll meet, only where.</p>
+  <p>We are very careful with each other. From the outside I am sure we look like two people on a first date, not people who cried holding hands on a staircase forty-eight hours ago. He's easy to talk to and also clearly hopeless — he overthinks everything, can't decide whether to walk on the street side of the sidewalk, laughs too loud and then looks embarrassed about it. I find all of it unreasonably endearing.</p>
+  <p>We don't talk about Itomori every time. That's the strange discipline we've fallen into without discussing it — we let it sit in the corner of the table like a third person who hasn't spoken yet. But it's always there. He'll mention the ridge over the lake and we'll both go quiet. I'll say something about the festival, the <em>kuchikamizake</em>, the braided cords my grandmother makes, and his hand will drift up to the back of his neck and he'll get this look like a word is dissolving on his tongue before he can speak it.</p>
+  <p>"It's like a name you've forgotten," he says on Friday, frustrated, pressing his fingers to his temple. "You know the shape of it. You know how many syllables. You just can't—"</p>
+  <p>"Don't force it," I tell him, though I want to force it more than he does. "I have this feeling that if we grab at it, it'll go further away."</p>
+  <p>He looks at me. "How do you know that?"</p>
+  <p>"I don't," I admit. "I just know it the way I knew you were important."</p>
+  <p>Neither of us says anything for a while after that.</p>
+
+  <div class="break"><span class="l"></span><span class="knot"></span><span class="r"></span></div>
+
+  <p>Sunday. Sayaka and Tessie both come up to Tokyo — Tessie drove, which means Tessie complained about parking the entire first ten minutes. We get okonomiyaki at a place near my apartment and I tell them everything. The trains. The stairs. The names. The boy who said Itomori like he'd been born and raised there.</p>
+  <p>Sayaka and Tessie look at each other. It's a long look. I know that look — it's the look of two people deciding who has to be the one to say it.</p>
+  <p>"Mitsuha," Sayaka says slowly, setting down her chopsticks. "Do you really not remember the way you were? Back then?"</p>
+  <p>"What do you mean, the way I was."</p>
+  <p>"You were unwell," Tessie says bluntly, because Tessie has never once chosen a gentle word when a true one was sitting right there. "Right after the comet. The evacuation, the whole — everyone was a wreck, sure. But you were a specific kind of wreck. You'd cry and not know why. You'd say you'd forgotten someone and it was killing you and you couldn't remember their face or their name, you just knew they were gone. You said it for months."</p>
+  <p>The okonomiyaki sizzles between us. I feel like the floor of the restaurant has gone soft.</p>
+  <p>"That's grief," I say. "That's just... everyone lost people."</p>
+  <p>"No." Sayaka shakes her head. "We lost people and we knew who. We had funerals. You—" She hesitates. "You were grieving someone who didn't have a name. You'd write things down so you wouldn't forget and then you'd look at what you wrote and not understand it. You kept this — do you not remember this? — you kept saying you had to find them before you forgot completely. And then one day you just... stopped saying it. You went quiet. And you've been a little bit quiet ever since, honestly. For years. We talk about it. We worry about you."</p>
+  <p>"We had a whole group chat about it," Tessie says. "Called 'Is Mitsuha Okay.' You were never in it, obviously."</p>
+  <p>"Tessie."</p>
+  <p>"What? She wasn't okay! That's not a secret, that's an observation!"</p>
+  <p>But I'm not really listening anymore, because something is happening in my chest, some pressure, some recognition rising like water in a well. <em>You were grieving someone who didn't have a name.</em> Eight years of low gray weather, and a reason for it I'd never let myself look at directly because there was nothing there to look at — just the shape of an absence, person-shaped, walking beside me my whole adult life.</p>
+  <p>"Sayaka," I say. My voice doesn't sound like mine. "Today. Do I seem—"</p>
+  <p>"Different?" She's already nodding, and her eyes are wet. "Mitsuha, you walked in here and you were lit up. I haven't seen you look like that since — I don't think I've ever seen you look like that. Tessie said it in the car. We were going to bring it up gently and ask if you'd met someone, because you finally looked like a person who—" She stops, presses her napkin to her mouth. "Who got back something they lost."</p>
+  <p>I am crying into okonomiyaki.</p>
+  <p>"I think I did," I whisper. "I think he's the person. I think he's the one I forgot."</p>
+
+  <!-- ============ Chapter Three ============ -->
+  <header class="chap-head" id="ch3">
+    <div class="chap-orn">&#10022;</div>
+    <div class="chap-eyebrow">Chapter Three</div>
+    <h2>What Taki Was Looking For</h2>
+  </header>
+  <div class="pov">Taki</div>
+
+  <p>Tsukasa and Takagi corner me on a Tuesday.</p>
+  <p>I've made the mistake of being happy in front of them, which around these two is like bleeding in front of sharks. We're at the café we always go to — the one where they've spent the better part of a year gloating about their offers while I sweat through interview after interview that goes nowhere — and I guess I've been smiling at my phone, because Tsukasa reaches over and tilts the screen down with one finger.</p>
+  <p>"Okay," he says. "Who is she."</p>
+  <p>"Who is who."</p>
+  <p>"Taki." Takagi leans back, arms crossed, grinning. "We've known you since middle school. You have approximately one facial expression, and it's mild indifference. You've been wearing a completely different face for a week. So. Who is she."</p>
+  <p>So I tell them. Not all of it, I leave out the part where I can't actually remember her, because I don't have the words for that yet. But I tell them about the trains, the stairs, the name. Mitsuha. From Gifu.</p>
+  <p>And here's the thing I'm not prepared for: they go quiet. Both of them. Tsukasa, who has a comeback for everything, just looks at me for a long moment.</p>
+  <p>"Gifu," he says.</p>
+  <p>"Yeah."</p>
+  <p>"Taki. Do you remember our trip? In high school. The one out to the mountains."</p>
+  <p>"Vaguely." And it is vague — that whole stretch of that summer is fogged, like a window someone breathed on. "We went to Gifu. I made people come with me. We got ramen. I don't really—"</p>
+  <p>"You don't remember why we went," Tsukasa says. It isn't a question.</p>
+  <p>"To see the comet site, wasn't it? I was into all that."</p>
+  <p>"You were obsessed," Tsukasa says, and there's no teasing in it now. "Taki, you have to understand how strange it was. You came to school one day with this notebook full of sketches of a town. Really detailed. A lake, a shrine, these specific streets. And you said you had to find it. You wouldn't say why. You dragged us across the country. You barely talked on the train. You kept looking at your phone like you were waiting for a message that never came. You just got more and more wound up about it, and then you found out the town in your drawings was Itomori — the comet town, the one from the news — and you completely lost it."</p>
+  <p>"Hang on," Takagi says. "If this girl is related to that trip somehow, you should talk to Okudera-senpai. She went with you and Tsukasa."</p>
+  <p>"Okudera came?" The name does something soft and far away in my chest, but no clearer than anything else from that summer.</p>
+  <p>"She came," Tsukasa says. "Call her. Seriously. She saw things on that trip I didn't — she was with you more than I was. She was the last one to speak with you before you bailed on us and left us a note telling us to go home without you."</p>
+  <p>So I call her. It's the middle of a weekday but Okudera-senpai picks up on the third ring, and when I put her on speaker and tell her — Itomori, the girl, the trains — there's a long silence on the line, and then she says, in a voice I've never heard her use, careful and amazed:</p>
+  <p>"Taki. I think about that trip more than I've ever told you."</p>
+  <p>"There was a diary," she goes on, quieter. "On your phone. You kept trying to open it and it was — gone, or corrupted, or something. You showed me on the train. The entries just dissolved while you were looking at them, like ink in water. You were frantic. I'd never seen you like that. I've never seen you like that since — until, well." A pause. "Until you called me just now sounding like this."</p>
+  <p>"And then," Okudera-senpai says through the phone, "at the ramen place. There was an old man who ran it. He recognized the town in your sketchbook before you said a word — and then he told us. That Itomori had been wiped out three years before by the comet." Her voice thins. "You went so pale, Taki. You didn't say anything. You just stared at your own drawings like they'd betrayed you." She paused and thought for a moment. "And then I remember us going to a library so you could obsessively look up records from the incident. But that part was much more hazy. Either way it was like the bottom had dropped out of the world. Over a town you swore you'd never been to. Tsukasa and I just sat there. We were kids. We didn't know what to do with you."</p>
+  <p>"Then the next morning," Tsukasa says, low, "you were just gone."</p>
+  <p>Okudera-senpai agreed. "The next day you left us a note saying you were going up some mountain alone. We debated calling the police. When I finally saw you back in Tokyo you were... different. Calm. But emptied out. You said you'd had a dream you couldn't hold on to, and you never really brought up Itomori again. Not once, in five years." A breath. "I always wondered what happened to you up there. I think part of me has been waiting this whole time for you to call and tell me."</p>
+  <p>The café is loud around us — the espresso machine, somebody's laugh, the door chime — and I sit in the middle of all of it feeling like the floor has dropped away and left me suspended over the dark shape of my own forgotten life.</p>
+  <p>"Why are you telling me all this now," I manage.</p>
+  <p>"Because for five years you've been a little bit gone, man." It's Takagi who says it — Takagi, who I have literally never heard finish a sincere sentence. He's not grinning anymore. "Going through the motions. We figured it was just you growing up sad, like many people do. And then this week you walk in here lit up like a kid, talking about a girl from Gifu, and I thought — what if she's it. What if she's the thing you were looking for back then. What if you've spent five years missing someone you actually met."</p>
+  <p>"He's right," Okudera-senpai says softly through the phone, and I can hear that she's a little overcome. "Taki, I saw your face on that mountain trip. You were looking for a specific person. Not a place — a person. You just couldn't remember who. And I've watched you go quiet for years since." A pause. "You don't sound quiet right now."</p>
+  <p>"You drew her town before you'd ever seen it," Tsukasa says. "You cried over a place you didn't know. You went up that mountain and came down hollow. Taki — whatever happened to you out there, I don't think it was nothing. And I don't think it's a coincidence that the one thing that's ever brought you back to life is a girl from the exact place you can't remember."</p>
+  <p>I think about Mitsuha across the café table saying <em>don't force it, if we grab at it it'll go further in</em>. I think about the back of my own neck, the gesture I make when a word dissolves. I think about a shrine I drew before I'd seen it.</p>
+  <p>"There's a shrine," I hear myself say. "On the mountain. Above the lake. I drew it. I went up to it that night — I think — and I can't remember what happened there but it's the center of all of it, I can feel it, it's where the hole in me starts."</p>
+  <p>"So go back," Tsukasa says simply.</p>
+  <p>"What?"</p>
+  <p>"Go back. With her. You both can't remember the same thing, you both came alive the second you found each other — so go to the one place that's underneath all of it." He shrugs, like he hasn't just said the most important thing anyone's said to me in years. "Worst case, it's a nice trip to the mountains with a pretty girl. Best case—"</p>
+  <p>"Best case you finally find what you went up that mountain looking for," Okudera-senpai says. "Go, Taki. And — call me after. Promise me you'll call me after."</p>
+  <p>"I promise."</p>
+  <p>"Good." I can hear the smile come back into her voice, the old warmth, the ring she wears now catching some light I can't see. "Now hang up on me and go text that girl."</p>
+  <p>I take out my phone. My hands aren't quite steady. I open the thread with Mitsuha — already the most-used thread on my phone, after one week — and I write: <em>I think we have to go there. To Itomori. Together. I think the answer's at the shrine.</em></p>
+  <p>The reply comes back before I've put the phone down, so fast she must have been holding hers too:</p>
+  <p><em>I know. I think I've known since the café. When can you leave?</em></p>
+
+  <!-- ============ Chapter Four ============ -->
+  <header class="chap-head" id="ch4">
+    <div class="chap-orn">&#10022;</div>
+    <div class="chap-eyebrow">Chapter Four</div>
+    <h2>What the Old Ones See</h2>
+  </header>
+  <div class="pov">Mitsuha</div>
+
+  <p>I go to my grandmother before I go to the mountain.</p>
+  <p>We live close, all of us, in the way that families who survived something together live close — Grandmother and Yotsuha share an apartment two stations from mine, and I'm there most Sundays whether I mean to be or not. Yotsuha's nineteen now, taller than me, studying to be a teacher and absolutely insufferable about it. And Grandmother — Hitoha — is small and folded and slow the way old women get, but her eyes have never once been slow. She still braids cords. There's always a half-finished one in her lap, the threads running through her fingers, red and gold, the old patterns.</p>
+  <p>I'd meant to be casual about it. I'd meant to say <em>I'm taking a little trip, don't worry</em>. Instead I sit down across from her and the whole thing comes out — the trains, the stairs, the boy named Taki who knew the name Itomori like he'd breathed its air, the eight gray years, the friends who told me I'd been grieving someone without a name. Yotsuha listens with her mouth slightly open. Grandmother listens with her hands going still on the braid.</p>
+  <p>When I finish, the room is quiet for a long time.</p>
+  <p>"Mitsuha," Grandmother says finally. "What are you asking me?"</p>
+  <p>"I'm asking if I'm crazy," I say, and my voice breaks embarrassingly. "I want to take a strange boy I've known for eleven days to the mountain, to the <em>goshintai</em>, because we both think — we both feel like there's something up there that belongs to us. That was taken from us. And it makes no sense, Grandmother, none of it makes sense, and I can't stop. I haven't been able to stop since I raced off that train."</p>
+  <p>I expect her to tell me to be sensible. To rest. To not go stirring up the lake and the dead and the grief I've packed away.</p>
+  <p>Instead my grandmother sets down her braiding, and she looks at me with an expression I have never seen on her face before — something between wonder and grief and a strange, settling recognition, like a woman watching the last piece of a puzzle she gave up on years ago finally turn up under a chair.</p>
+  <p>"I had dreams once," Hitoha says slowly. "When I was a girl. Strange dreams — that I was someone else, living another life, in another time. I never understood them. They faded, the way dreams do, and I told myself I'd imagined them. My mother had them too. She said it ran in the women of our shrine. <em>Musubi</em>," she says, and the old word fills the room. "The thread that ties. The knot that connects. Time twisting, gathering, coming apart, joining again. We are the keepers of it, Mitsuha, your line. We tie the cords. We make the <em>kuchikamizake</em>. We have always stood at the place where this world touches the other." Her eyes are very bright. "I forgot my own dreams. And I have always wondered — what was it I forgot? What was I being shown?"</p>
+  <p>She reaches across and takes my hand, and her grip is stronger than it has any right to be.</p>
+  <p>"You forgot something too," she says. "Eight years you've carried an absence shaped like a person. I watched you do it. And now a boy appears who knows our mountain in his bones, and the gray lifts off you like fog burning away." She squeezes once, hard. "Child, I don't know what's up there. But go. Go to the <em>goshintai</em>. Cross the river. And Mitsuha—" Her voice drops. "Whatever you left there. Bring it home."</p>
+  <p>I'm crying again. Yotsuha is crying without knowing why. Grandmother just picks her braiding back up, threads running gold through her fingers, and says, almost to herself, "<em>Musubi</em>. So it comes around. So the knot finds its end." She looks at me sidelong, and there's the ghost of a smile. "Bring the boy by. After. I want to look at his face."</p>
+  <p>I don't understand, then, why she says it like that. <em>I want to look at his face.</em> As though to confirm something.</p>
+
+  <div class="pov">Taki</div>
+
+  <p>My dad takes the news better than I expect, which is to say he takes it like my dad.</p>
+  <p>We don't talk much, the two of us — we never have, not since Mom. We're good at sharing a quiet apartment and bad at sharing anything else. So when I tell him over dinner that I'm going to Gifu for the weekend with a girl, I brace for the silence, the raised eyebrow, the <em>and who is this</em>.</p>
+  <p>Instead he sets down his chopsticks and looks at me for a long moment, and then he says something that knocks the wind out of me.</p>
+  <p>"You look like your mother right now."</p>
+  <p>"What?"</p>
+  <p>"Happy." He says it plainly, the way he says everything. "You've got her face when you're happy. I haven't seen it in a long time, Taki. Years, maybe. I'd started to think you just grew up into a serious man and that was that. Some men do." He picks his chopsticks back up, looks down at his rice. "I'm glad to be wrong."</p>
+  <p>I don't know what to do with this. My father has never, in my recollection, commented on my interior life. "It's — we just met, Dad. It's complicated. I can't even really explain it."</p>
+  <p>"Don't explain it to me." He waves a hand. "Explain it to her. Go." And then, quieter, in a register I almost never hear from him: "Your mother and I didn't get as much time as we thought we would. Nobody does. You think there's an endless amount and then you look up and it's gone." He meets my eyes. "If a girl makes you look like that — like that, like you did just now when you said her name — you don't sit at home being careful about it. You go find out what it is. Time's the one thing I can't get you more of."</p>
+  <p>I sit there with my throat tight in a quiet apartment with my undemonstrative father, and I think that this might be the most he's said to me at once since I was a child.</p>
+  <p>"Okay," I manage. "Okay. Thanks, Dad."</p>
+  <p>"Take a real jacket," he says, the moment passing, himself again. "The mountains get cold. And call me when you're down off whatever you're climbing so I know you didn't fall off it."</p>
+
+  <!-- ============ Chapter Five ============ -->
+  <header class="chap-head" id="ch5">
+    <div class="chap-orn">&#10022;</div>
+    <div class="chap-eyebrow">Chapter Five</div>
+    <h2>The Train West</h2>
+  </header>
+  <div class="pov">Mitsuha</div>
+
+  <p>We leave on a Saturday morning, early, while the platform at Tokyo Station is still cold and half-empty and the vending machines glow like little shrines.</p>
+  <p>I haven't been back. Not once. After the comet I came to Tokyo for school and my whole family came with me — Grandmother, my sister Yotsuha, my father — and I built a life out of not-going-back, out of being a girl from somewhere that no longer exists, which is a thing you can be in this city, where nobody's from anywhere and nobody asks twice. The town we left simply emptied out behind us. My friends who didn't survive are buried on a hill that's still there even though the town isn't. And I've been afraid that if I ever stood at the edge of that water I would finally feel the size of what I lost and it would take me under.</p>
+  <p>And now I'm going back on purpose, with a boy I've known for eleven days, to climb a mountain and find out why I've spent my whole adult life grieving him.</p>
+  <p>"You're doing the thing," Taki says.</p>
+  <p>"What thing."</p>
+  <p>"The thing where your face goes somewhere I can't follow." He hands me one of the two coffees he bought, settling into the window seat beside me as the Shinkansen sighs and begins to move. "You've been doing it since the platform."</p>
+  <p>"I'm scared," I tell him. "I left and I never went back and now I'm going back and I don't know what I'm walking into. My own house is at the bottom of a lake, Taki. I've been pretending none of it happened for five years because remembering it hurts, and now I'm choosing to remember more. On purpose."</p>
+  <p>He's quiet for a moment. The city slides past and starts to thin, towers giving way to apartment blocks giving way to the first green edges of the world.</p>
+  <p>"When I went the first time," he says slowly, "the time I can't really remember — I think I was scared too. Tsukasa said I barely talked the whole way. And I think I went anyway because not-knowing had become worse than anything I might find." He turns the coffee cup in his hands. "That's where I am now. The hole's been there so long I stopped feeling it as a hole. It just felt like me. Like I was a person with a quiet sad place in the middle. And then you got off a train three stops early and the quiet sad place was suddenly a hole again, one that is starting to be filled." He glances at me, a little embarrassed. "I'd rather try to feel complete, despite how scary it feels right now."</p>
+  <p>I look at this boy and I have the thought I keep having, the one that's equal parts wonder and terror: <em>I don't remember you. And I would follow you off the edge of the earth.</em></p>
+  <p>"Okay," I say, and I put my head on his shoulder, which I've never done, which makes his whole body go briefly rigid with happiness before he relaxes. "Tell me everything Tsukasa and Senpai told you. Start to finish. I want all of it before we get there."</p>
+  <p>So he tells me. The notebook full of my town. The diary on his phone that dissolved as he read it. The old man at the ramen shop. The night on the mountain he went up whole and came down hollow. And the more he talks, the more I feel it — not memory, never quite memory, but the pressure of memory, like a name behind a locked door, like a tongue finding the gap where a tooth used to be.</p>
+  <p>"There was a festival," I hear myself say, when he's done. "Every autumn. My family ran the shrine — my grandmother, my sister, me. We made <em>kuchikamizake</em>. You chew the rice and spit it back and let it ferment, it's ancient, it's a little disgusting, the boys at school used to tease me about it horribly." I'm smiling without meaning to. "And there's a place — the body of the god. The <em>goshintai</em>. It's not at the shrine in town, it's out, across a river, up in the crater of an old—" I stop.</p>
+  <p>Taki has gone completely still beside me.</p>
+  <p>"Up in the crater," he says. "Of an old volcano. There's a huge tree. And to get to it you have to cross water, and Grandmother said—" His voice falters. He presses his hand to the back of his neck. "Why do I know what your grandmother said?"</p>
+  <p>"Crossing the river means crossing between this world and the other," I whisper. "To enter, you leave behind your most important thing."</p>
+  <p>We stare at each other. The train hurtles west through brightening country, and somewhere out ahead of us, past Nagoya, past Gifu, up a mountain above a lake that used to be a town, there is a tree in a crater where — I am suddenly, wordlessly certain — both of us left our most important thing behind.</p>
+  <p>Taki takes my hand, and I let him, and we ride the rest of the way west in a silence so full it's almost unbearable, watching the mountains rise.</p>
+
+  <div class="break"><span class="l"></span><span class="knot"></span><span class="r"></span></div>
+
+  <p>Gifu. Then the local line — two cars, rattling, nearly empty, the same line Taki rode years ago without me. The stations get smaller and farther apart. Rice paddies flash silver. An old woman across the aisle has a basket of vegetables on her lap and falls asleep against the window, and I think: people still just live here, in the next valley over. Life went on, an hour from the place where my life stopped.</p>
+  <p>Nobody lives in Itomori anymore. After the comet there was talk of rebuilding, for about a year, and then there wasn't — the lake had swallowed the heart of the town and the survivors had already scattered, to Nagoya, to Takayama, to Tokyo. My family went with me. Grandmother and Yotsuha and my father all came east; we are a Tokyo family now, technically, though none of us would ever say it that way. The town we left behind just... stayed left behind. A ring of empty houses around dark water. A shrine with no one to keep it.</p>
+  <p>Which means there's no inn waiting, no family hearth at the end of this train line — just the husk of a place and a mountain above it. We've booked a room in the last town with a pulse, a half hour's drive from the trailhead, and arranged a car. We'll sleep there tonight and go up at first light.</p>
+  <p>"It's a hard climb," I tell Taki as the train slows. "Half a day, if I remember the trail. And I—" The strangeness of it catches in my throat. "I do remember the trail. I remember it perfectly. I climbed it my whole childhood. How can I remember the trail and not remember you?"</p>
+  <p>"Maybe," Taki says quietly, looking up toward the ridgeline where the late sun is catching the trees gold, "that's exactly what we're going up there to fix."</p>
+
+  <!-- ============ Chapter Six ============ -->
+  <header class="chap-head" id="ch6">
+    <div class="chap-orn">&#10022;</div>
+    <div class="chap-eyebrow">Chapter Six</div>
+    <h2>Kataware-doki</h2>
+  </header>
+  <div class="pov">Taki</div>
+
+  <p>There's a ramen shop standing by itself on the side of the national highway, and I know it before we reach it.</p>
+  <p>That's the thing that undoes me, on the morning of the climb — not the lake, not the mountain, but this. A squat building with a faded <em>noren</em> curtain and a hand-painted sign, alone on a stretch of road with nothing around it but fields and the rise of the mountains beyond. We've stopped because Mitsuha said there's nowhere to eat closer to the trailhead, and because neither of us trusts our legs to carry us up a mountain on an empty stomach. But the moment the car pulls onto the gravel, my whole body goes tight with a recognition I can't place.</p>
+  <p>"I've been here," I say.</p>
+  <p>Mitsuha looks at me.</p>
+  <p>"The first time. I ate here." I'm staring at the <em>noren</em> like it might dissolve if I blink. "I don't remember remembering it — but I was here."</p>
+  <p>Inside it's warm and steamy and almost empty, one old man behind the counter with a towel over his shoulder, ladling broth. He glances up when the curtain parts. And then he goes still — the ladle stopping over the pot — and he looks at the two of us standing in his doorway for a long, long moment.</p>
+  <p>"Well," he says finally, slowly. "Now there's a thing."</p>
+  <p>We sit at the counter. He makes us ramen without being asked, two bowls, his hands moving on their own while his eyes keep flicking between us like he's checking something against a memory. When he sets the bowls down he doesn't step away. He plants both hands on the counter and looks at Mitsuha first.</p>
+  <p>"You're one of the Miyamizu girls," he says. It isn't a question. "The shrine family. The mayor's daughters. I'd know that face anywhere — your grandmother sat right where you're sitting, oh, thirty years back, when she was young and I was younger. And you—" His voice catches. "You were at the festival. The last one. Before." He doesn't say <em>before the comet</em>. He doesn't have to. "I thought all you Miyamizu went east. I'm glad. I'm so glad you got out, girl. We lost so many."</p>
+  <p>Mitsuha can't speak. She just nods, her eyes filling.</p>
+  <p>Then the old man turns to me, and his face changes — opens into something like wonder, like a man seeing a ghost he'd made his peace with.</p>
+  <p>"And you," he says softly. "I know you too. You don't look like you've aged a day, which can't be right, but I know you. Years ago. You came in off the local train with two friends — a tall fellow and a pretty older girl. But you were the one with the sketchbook. You showed me a drawing of a town and asked me how to find it." He shakes his head slowly. "I had to tell you it was gone. Three years under the lake. And you went white as a sheet, boy. You didn't make a sound. You just stared at your own drawing like the floor had gone out from under you, and your friends didn't know what to do with you, and I thought, the comet's still taking pieces out of people, even strangers, even now." His eyes are wet. "The next morning your friends had gone on ahead, or gone home, I don't recall — but you stayed. You came back to my shop and you begged me to drive you up the mountain. To the old shrine, the one across the river, the body-of-the-god. Nobody goes up there. I told you that. You went anyway. I drove you up alone and you walked into the dark by yourself and I sat in my truck half the night wondering if I'd just helped a boy go up a mountain to die."</p>
+  <p>The shop is silent except for the broth ticking on the stove.</p>
+  <p>"You came down the next morning," he goes on. "Different. Hollowed out. You wouldn't say what happened. You thanked me and you got on the train and I never saw you again, and I'll tell you the truth — I've thought about you for five years. Wondered what you found up there. Whether you were even real." He looks between us, at Mitsuha the shrine maiden who got out, at me the boy who came with a drawing of her drowned town, and something works in his weathered face. "And now here you are. The both of you. Together. Walking into my shop on the same morning like the two ends of a story I only ever heard the middle of."</p>
+  <p>"We're going up," Mitsuha says quietly. "To the <em>goshintai</em>. Today."</p>
+  <p>The old man straightens. He takes the towel off his shoulder, folds it, sets it down with a kind of ceremony.</p>
+  <p>"Then eat," he says. "Eat, and I'll close up and drive you. Same as last time." He looks at me. "I don't know what's up that mountain. I never asked and I don't want to know. But I drove one half of this up there alone five years ago and watched it come down broken, and I'm damned if I'm going to miss driving both halves up together." His voice roughens. "An old man doesn't get to be part of something like this twice. Let me."</p>
+  <p>We eat. He closes the shop in the middle of a weekday morning, flips the sign, and drives us up the winding road to the trailhead in a rattling truck that smells of broth and cigarettes, not saying much, his hands sure on the wheel. When he lets us out at the bottom of the trail he doesn't tell us to be careful. He just looks at the two of us standing there together, and he nods, once, like a man witnessing something he'll carry to the end of his life.</p>
+  <p>"Go on, then," he says. "Go get it back."</p>
+  <p>And he stays — I see it in the mirror as we start up — he stays parked at the trailhead, the way he did before, an old man in a truck keeping watch over a mountain, refusing to leave until he's seen us come down.</p>
+
+  <div class="break"><span class="l"></span><span class="knot"></span><span class="r"></span></div>
+
+  <p>The lake stops us before the mountain does.</p>
+  <p>We come around the shoulder of the trail in the bright midday sun and there it is below us — the water, vast and still and gourd-shaped, exactly the shape I drew in a notebook when I was seventeen and had never been here. Mist sits on it. Somewhere under that flat dark surface is a school, a shrine, a convenience store, a house where a family ran cords through their fingers. Mitsuha makes a sound I've never heard a person make, low and torn, and her hand finds mine and grips until it hurts, and we stand there at the edge of the trail and look at the grave of her whole world.</p>
+  <p>"I grew up there," she whispers. "Down there. I used to complain about it. I used to scream that I wanted to be a handsome Tokyo boy in my next life, just to get out —" She stops, frowning, like the words surprised her on the way out. "Why did I — that's a strange thing to have said. A handsome Tokyo boy. Why do I remember saying that?"</p>
+  <p>Something turns over in my chest. I don't have an answer. We keep climbing.</p>
+  <p>The trail is hard and I know every step of it, I call the turns before they come, name a fallen log we haven't reached yet, and each time I do it Mitsuha looks a little more frightened and a little more certain. We cross a ridge. The trees thin. And then the land opens and drops and there it is, the thing we both described on the train without remembering: the crater. A great green bowl in the top of the mountain, ringed by rock, and at its center, impossibly, a single enormous tree, and beneath the tree a low dark opening in the earth, half-shadow, half-stone.</p>
+  <p>And the river. A thin bright ribbon of water we have to cross to reach the center.</p>
+  <p>Mitsuha stops at its edge. I stop beside her. Neither of us has to be told.</p>
+  <p>"Crossing the river means crossing between this world and the other," she says softly. "To enter, you leave behind your most important thing." She looks at me. "We already did, didn't we. Whatever it was. We already left it in there. We're just... coming back for it."</p>
+  <p>We cross the water together. It's cold and shallow and it soaks us to the shin and the moment my foot touches the far bank the world goes strange — the light tilts, the air thickens, sound drops away like someone pressed a hand over the mouth of the sky. We walk into the shadow of the great tree, to the low stone hollow at its heart, and there, on a flat rock furred with five years of moss, sit two small clay vessels.</p>
+  <p>One of them is broken. The other is whole, its seal cracked, empty.</p>
+  <p>"That one," I hear myself say, pointing at the empty one, and my voice doesn't sound like mine. "I drank from that one."</p>
+  <p>"That's mine," Mitsuha breathes. "That's my <em>kuchikamizake</em>. I made it. Grandmother and I, before the festival. I chewed the rice and — I offered it here, half of me, half of my—" Her hand rises to her mouth. "Half of me is in that cup, Taki. That's what the offering is. You leave half of yourself with the god. And you drank it."</p>
+  <p>"I drank it," I say. "I came up here and I was desperate and I drank it because I had to find you, because the town was already gone and you were already—"</p>
+  <p>The word stops in my throat.</p>
+  <p>And then <em>kataware-doki</em> falls.</p>
+  <p>It isn't evening. It's barely past dawn. But the light goes the color of twilight anyway — that impossible violet-gold, the hour that is neither day nor night, the hour the old people call the time of meeting, when the boundary thins and the dead walk and you can meet what you've lost. The crater fills with it. The tree blazes. And the seal breaks — not on the cup. On us.</p>
+  <p>It comes back all at once.</p>
+  <p>Everything comes back all at once.</p>
+
+  <div class="break"><span class="l"></span><span class="knot"></span><span class="r"></span></div>
+  <div class="pov">Mitsuha</div>
+
+  <p>I am Mitsuha. I am also, for one summer when I was seventeen, a boy named Taki Tachibana in Tokyo, waking in his bed with his heart pounding and his hands going to a chest that is suddenly flat, suddenly wrong, suddenly his. And I am Taki, waking as a girl in a mountain town, clutching at a body that isn't mine, and Yotsuha screaming that I've gone strange, and Grandmother watching with those slow knowing eyes —</p>
+  <p>It floods in, and it doesn't stop.</p>
+  <p>The swaps. Two, three times a week, without warning, never knowing which morning I'd wake as myself and which I'd wake as him. The notes we left each other — on phones, on skin, on scraps of paper — <em>who are you, what did you do yesterday, DON'T TOUCH MY BODY, why is everyone mad at me</em>. The diary entries. Taki living my life so badly and so sweetly, fighting the boys who teased me, getting me a reputation for being suddenly bold, suddenly fierce, climbing to the top of my class because he's good at the things I'm not. Me living his — terrified of Tokyo, dazzled by it, getting him a date with Okudera-senpai, learning the city through his eyes, the café, the construction sites he loved, the rooftops.</p>
+  <p>We were strangers in each other's skin, and we fell — God, we fell so completely, the way you can only fall for someone whose whole interior life you've been living inside. I knew him from the inside out before I ever knew his face. He knew me the same way. We were the closest two people have ever been and we had never once been in the same room.</p>
+  <p>And then it stopped.</p>
+  <p>It stopped because — the memory arrives and it cleaves me in two — it stopped because I was dead.</p>
+  <p>I died. The night of the festival, the night the comet split and a fragment fell, it fell on Itomori, and I was there, and so were five hundred others, and we died, all of us, the whole town, my sister, my father, my grandmother, my friends, me. That timeline happened. I lived it. I'm remembering it now and it's real — the flash, the heat, the town erased between one heartbeat and the next.</p>
+  <p>But Taki —</p>
+  <p>Taki came looking.</p>
+  <p>Three years later, in a body in Tokyo that had stopped swapping, haunted by a girl, he came out here. He drew my town from a fading dream. He climbed this mountain. He drank the other half of me from that cup. And he crossed time — he swapped back, three years back, into my body on the last day of my life, knowing the town was about to die, and he fought. He stood in my body and screamed at my father the mayor to evacuate the town. He and Tessie and Sayaka rigged the explosion, hijacked the broadcast, ran five hundred people out of the valley in the dark while the sky came apart above them.</p>
+  <p>He saved us. He saved my father. He saved my sister and my grandmother. He saved my friends. He saved me — I am alive, I am standing here in this crater twenty-five years old with soaked shins because a boy I had never met in the flesh refused to let me be dead.</p>
+  <p>And then, at twilight, at <em>kataware-doki</em>, here on this mountain, the two of us finally met — really met, body to body, on the same ground at the same moment, for the only time in our lives — and we had minutes, just minutes, before the light failed. <em>Let's write our names</em>, he said. On each other's hands. So we won't forget. And he took my hand first and pressed the pen to my palm and wrote —</p>
+  <p>— and the twilight ended before he finished telling me, before I could write a single stroke back on his, and he was gone, and the memory of him went with him. It was only later, alone in the dark, that I looked down at my own hand and saw what he'd written there in the last seconds we had. Not his name. He'd written <em>I love you</em>. And I never got to answer it. And then even his writing faded, and the name faded, and he faded, and I was left holding a hand that said three words from a person I could no longer remember. The price. <em>To enter, you leave behind your most important thing.</em> We saved the town and the cost was each other. We forgot. We forgot completely. We came down off our mountains hollow and we spent five years grieving a person we couldn't name.</p>
+  <p>I am remembering all of this in the space of a single held breath, in the violet light, with Taki's hands gripping both of mine.</p>
+  <p>And I am looking at him — at this boy, this real, solid, breathing boy who fought across three years and the wall between life and death to drag me back into the world — and I understand, finally, all the way down, what he did. What he is. What he means.</p>
+  <p>"You saved me," I sob. It's barely words. "I died, Taki. I died and you — you wouldn't let me. You came back for me. You came to see me — you came to find me, that day in Tokyo, on the train, years ago, before I'd ever met you, you'd already—"</p>
+  <p>"You came to see me first," Taki says, and he's weeping too, openly, his whole face streaming, holding onto me like the ground might tilt. "Before any of it. The very first swap — Mitsuha, you came and found me in Tokyo and I didn't know, I was just a kid, I didn't understand what I'd been given. You crossed years to put that braided cord into my hand on a train. You started this. You found me across time before I ever found you."</p>
+  <p>"Your name is Taki," I cry, the words I lost on this mountain five years ago finally, finally landing. "Taki, Taki, Taki — I'm not going to forget it. I'm never going to forget it again. I know you. I know you. I've always known you. I knew you from the inside before I knew your face and I have loved you the entire time, through five years of not knowing why, I never stopped, the missing was the loving—"</p>
+  <p>"Mitsuha." He says my name like a man setting down something he's carried up a mountain for years. "Mitsuha. I found you. I finally found you."</p>
+  <p>And we hold each other in the broken twilight under the great tree, in the crater where we left ourselves, and it is not a quiet cry, not the dignified single tear of a sad film. It is the ugly, total, body-wracking weeping of two people who lost the most important thing in the universe and have just, after half a decade of grief they couldn't name, gotten it back. It is grief and it is joy and the two are the same flood. Five years of gray pours out of me. Every gray Sunday, every unnamed ache, every time I got off a train early and didn't know who I was looking for — it all comes apart and washes down the mountain and what's left, when the weeping finally slows, is so light, so whole, so unbearably complete, that I think I could float up off the ground.</p>
+  <p>The twilight holds. It holds longer than it should — as though the god of the mountain, the <em>musubi</em>, the thread that ties, is giving us, this once, more than minutes. Giving us all the time that was taken.</p>
+  <p>When the ordinary morning light finally returns, soft and gold and real, we are sitting against the great tree with our arms around each other, emptied and full at the same time, and Mitsuha — I — am the first to laugh.</p>
+  <p>"We swapped bodies," I say, wiping my face, starting to laugh through the tears. "Taki. You were a teenage girl. You kept grabbing my chest every morning—"</p>
+  <p>"In my defense —"</p>
+  <p>"There is no defense, I have the diary entries memorized, I lived them—"</p>
+  <p>"You gave me a reputation for being a sweet tooth who spent all his money on sweets! Tsukasa thought I'd lost my mind!"</p>
+  <p>And we're laughing now, both of us, helpless, leaning on each other under the tree, while below the sun sets over the lake that used to be her town.</p>
+  <p>And then the laughter fades, and I go quiet, because there's one memory that hasn't settled with the others — one that's been sitting just under everything since the flood came back, and now, in the calm, it surfaces.</p>
+  <p>I take his hand. I turn it over, palm up, the way mine was turned up that night. I look at it for a long moment.</p>
+  <p>"You wrote <em>I love you</em>," I say quietly. "On my hand. At the very end. It was your idea — you said let's write our names so we won't forget — and you took my hand first, and you wrote that instead of your name. And then the light went and I never even got to write a single stroke back." I look up at him. "Taki. How could you have known that? We'd known each other — what, really? A handful of weeks of waking up in each other's lives. We had never once been in the same room. We had never had a single conversation as ourselves until that twilight, and it lasted minutes. And in those minutes, with the world ending and your one chance to leave me something, you skipped your own name and went straight to the biggest words there are." My throat tightens. "How could a seventeen-year-old boy who'd never properly met me have meant that? How could you be so sure?"</p>
+  <p>He doesn't rush to answer. He sits with it — the way I'm learning he sits with everything, turning it over, taking it seriously.</p>
+  <p>"I think you've got the order of it wrong," he says finally. "You keep saying we barely knew each other. By the rules of how people usually meet — sure. Coffee, conversation, a face across a table. We had almost none of that." He looks down at our hands. "But Mitsuha — I didn't know you the way you know someone you've dated for a few weeks. I knew you the way you know yourself. I woke up inside your life. I knew how your knees ached climbing the shrine steps and exactly how it felt to be teased by those boys at school and how much you loved your sister and how furious you were at your father and how badly you wanted out of that town. I didn't observe those things. I lived them, from the inside, in your skin. There is no closer way to know a person. People spend forty years married and never get to stand inside each other the way we stood inside each other for one strange summer." His voice is quiet and certain. "By the time I ever saw your face, I already knew your whole interior. How do you not love someone you've been all the way inside of?"</p>
+  <p>"But that's — that could just be the swapping," I manage. "That's <em>musubi</em>, that's the thread doing it to us—"</p>
+  <p>"No. Listen." He turns my hand over, traces where the words used to be. "Because here's the part I keep coming back to. You came first. The very first morning it happened — you woke up in Tokyo, in my body, in a city you'd never seen, a city that must have been terrifying to a mountain girl, and you didn't curl up and wait for it to end. You went out into it. You explored my whole life. You looked for me — you got me that date with Okudera-senpai, you left me notes, you lived my days better than I lived them." He shakes his head slowly. "I felt that, Mitsuha. Every time I woke up as you, I could feel the care you'd taken with my life the day before. You'd come into the dark of a strange city looking for me before either of us understood a thing. And everything I did after — all of it — I was just responding in kind. You crossed into the unknown for me first. The least I could do was cross back for you."</p>
+  <p>I can't breathe.</p>
+  <p>"And the writing — the words themselves," he goes on, softer now. "You ask how I could have meant it, at seventeen, in a panic. I'll be honest with you: I don't think it started as a feeling. I think it started as a choice." He frowns, working it out as he speaks. "When the swapping stopped — when I woke up one day and you were just gone, no more mornings as you, nothing — I didn't sit around waiting to feel the right way about it. I just knew something was wrong and I went looking. That was an action before it was an emotion. I drew the town. I got on the train. The swaps had been carrying me through your life three years behind mine, and once they stopped, my life just kept running forward while yours had already ended — I just didn't know that yet." His jaw works. "And then, out there, I found out. I went down a list of the dead with my finger and I found your name. Mitsuha Miyamizu. You weren't lost. You were dead — had been the entire time we were swapping, three years gone, and I'd been living in a you who didn't know she was already dead."</p>
+  <p>His eyes are wet now, but his voice doesn't shake.</p>
+  <p>"So by the time I climbed this mountain and drank from that cup, I already knew exactly what I was doing. There was no confusion left. I knew you were dead, I knew the comet was coming, and I drank your <em>kuchikamizake</em> for one reason — because Grandmother's lore said it might give me a way back to you, and I wanted that chance more than I'd ever wanted anything." He brings my hand up between us. "That's where the love was, Mitsuha. Not a swoon. Not a thunderbolt. A decision, to throw myself across three years and the wall between the living and the dead and fight fate itself for a girl I already knew was gone — because I could not, I would not, let the world keep you dead. And once you've decided that about a person the feeling isn't a question anymore. The feeling is just the name for what your whole body has already chosen. By the time I stood in front of you at twilight with a pen, <em>I love you</em> wasn't a guess. It was the truest thing I knew. I'd already proven it with everything I had. The words were only catching up."</p>
+  <p>But the fear isn't gone. "And now?" My voice is small. "We're not those kids anymore, Taki. We grew up apart. Eight years for me and five for you. We became whole different people, and we did it without each other. I'm scared that what you felt belonged to a boy who borrowed my body and a girl who doesn't exist anymore — and that I'm asking you to be bound by something a panicking seventeen-year-old wrote on your behalf." I look away. "How can you be sure you still feel it, now that you actually know me? The grown me. How do I know you're not just — keeping a promise the comet made for you?"</p>
+  <p>He reaches up and turns my face gently back to his.</p>
+  <p>"Because I didn't fall in love with the seventeen-year-old," he says. "I never really met her. I met fragments — mornings, a handwriting, a way of being brave that I borrowed for a few weeks. The girl I crossed time for was someone I only half-knew. I did all of it on faith — on a bet that whoever you turned out to be, whoever you grew into, would be worth it." His thumb brushes my cheek. "And then I found you on a staircase. Twenty-five years old. A stranger, fully grown into yourself. And these last weeks I've gotten to actually know you — not borrow you, not dream you. The woman who falls apart fast and gathers herself faster. Who hums when she's happy. Who came with me up this mountain to come back for ourselves." He shakes his head slowly. "I'm not choosing you because a mountain told me to, Mitsuha. I'm choosing you because I've met the real you now — the today you — and she's better than anything that frightened seventeen-year-old could have imagined. I didn't cross time so two kids could be in love. I crossed time so that we — these two people, here, right now — could get the chance to find out." He presses my open hand to his chest. "This. This is the thing I was fighting for. Everything I did, I did so we could be sitting under this tree having exactly this conversation. So you'd be alive to doubt me. So you'd be here, grown up and honest and scared, asking me if it's real." He holds my eyes. "It's real. And it was always going to have to become real — on purpose, between two adults who actually know each other. That part was never fate's to give. That part is ours."</p>
+  <p>And the fear goes out of me all at once — not because he reassured me, but because he didn't. Because he took the doubt as seriously as I did.</p>
+  <p>"I wrote nothing back," I whisper. "That night. I never got the chance — the light failed first. But I would have, Taki. If I'd had the time, I'd have written the same thing." I lace my fingers through his.</p>
+  <p>"So write it now," he says softly.</p>
+  <p>I take his hand, and with my fingertip, slowly, on his open palm, I trace the three words he wrote on mine eight years ago. And then I say them out loud, to his actual face, in the fading light, with no comet falling.</p>
+  <p>"I love you. The grown-up you. The one who didn't let me off the hook just now. I knew it at seventeen with nothing to go on, and I'm choosing it at twenty-five with everything to go on — and that's better, isn't it? To get to choose it. After all of this. To not have it just be fate."</p>
+  <p>"So much better," he says.</p>
+  <p>"Come on," I say at last, standing, pulling him up, my face wet and shining. He doesn't let go of my hand. He's never going to let go of my hand. "We have to cross back over. And then—" I take a breath. "And then we have a lot of people to go explain ourselves to."</p>
+
+  <div class="pov">Taki</div>
+
+  <p>We cross the river the other way — out of the world of the god and back into the ordinary one — and the strangeness lifts as our feet find the near bank, the air going thin and bright and normal again. We come down the mountain in the final light of the evening, and it's easier going down, or maybe it only feels easy because I'm not carrying the hole anymore. Mitsuha hums quietly as we walk.</p>
+  <p>The truck is still there at the trailhead. Of course it is. The old man is leaning against the hood with his arms crossed, and when he sees us come down out of the trees — together, hand in hand, faces wrecked and luminous — he doesn't ask a single question. He just looks at us for a long moment, and his weathered face folds, and he turns away and pretends to be very busy with his keys so we won't see him wipe his eyes.</p>
+  <p>"Got it back, then," he says gruffly, to the truck.</p>
+  <p>"We got it back," Mitsuha says.</p>
+  <p>He drives us down to the highway. At the shop he won't take our money, waves it off like we've insulted him, and as we're leaving he catches my sleeve. "Boy," he says. "Five years I wondered if you were real, and if you'd found what you went up there for. I'm an old man. You've no idea what it is, to get the end of a story you'd given up on." He grips my arm hard. "Whatever you two are building — you come back through here. You hear me? You don't let an old man wonder again."</p>
+  <p>"We'll come back," I promise him. And I mean it, because I'm starting to understand that this is what we've been given, all of us, not just the two of us: the chance to come back. To not have the story end in the dark. Mitsuha is alive and her town is grieved but her family is whole and there's an old man weeping happily into his keys, and somewhere east of here a grandmother is braiding a cord and waiting to look at my face.</p>
+  <p>We get on the local train. The mountains slide away behind us. And we go home — to Tokyo, to everyone, to the enormous and ridiculous task of explaining the unexplainable to the people we love.</p>
+
+  <div class="finis">結 &middot; Musubi</div>
+</main>
+
+<script>
+(function () {
+  // theme toggle (dusk default / dawn light)
+  var root = document.documentElement, twi = document.getElementById('twi');
+  root.setAttribute('data-theme', 'dusk');
+  twi.addEventListener('click', function () {
+    var dusk = root.getAttribute('data-theme') === 'dusk';
+    root.setAttribute('data-theme', dusk ? 'dawn' : 'dusk');
+    twi.innerHTML = (dusk ? '✦&nbsp;Dusk' : '☀&nbsp;Dawn');
+  });
+
+  // star field (dusk)
+  var sky = document.getElementById('stars');
+  function rnd(n) { var x = Math.sin(n * 91.7) * 43758.5453; return x - Math.floor(x); }
+  var frag = document.createDocumentFragment();
+  for (var i = 0; i < 90; i++) {
+    var s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = (rnd(i) * 100).toFixed(2) + '%';
+    s.style.top = (rnd(i + 200) * 70).toFixed(2) + '%';
+    var sz = (1 + rnd(i + 50) * 1.4).toFixed(2);
+    s.style.width = s.style.height = sz + 'px';
+    s.style.animationDelay = (rnd(i + 99) * 5).toFixed(2) + 's';
+    s.style.opacity = (0.3 + rnd(i + 7) * 0.6).toFixed(2);
+    frag.appendChild(s);
+  }
+  sky.appendChild(frag);
+
+  // frontispiece petals
+  var fp = document.querySelector('.frontispiece');
+  var defs = [[18, 9, 7, 9, 0], [40, 7, 6, 11, 2.4], [70, 10, 7, 9.5, 1.2], [86, 7, 6, 12, 3.6]];
+  defs.forEach(function (d) {
+    var p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left = d[0] + '%';
+    p.style.width = d[1] + 'px';
+    p.style.height = d[2] + 'px';
+    p.style.animation = 'petal ' + d[3] + 's linear infinite ' + d[4] + 's';
+    fp.appendChild(p);
+  });
+
+  // progress bar + back-to-top
+  var bar = document.getElementById('progress'), totop = document.getElementById('totop');
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    bar.style.width = pct + '%';
+    totop.classList.toggle('show', h.scrollTop > 800);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  totop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+})();
+</script>
+
+</body>
+</html>
